@@ -1,5 +1,5 @@
-def asertar(metodo, valor)
-  proc { |it| it.send(metodo, valor) }
+def asertar(metodo, *args)
+  proc { |it| it.send(metodo, *args) }
 end
 
 def ser(valor_o_asercion)
@@ -42,23 +42,11 @@ class Object
   end
 end
 
-class Docente
-  attr_accessor :edad
-
-  def initialize(edad)
-    self.edad = edad
-  end
-
-  def viejo?
-    self.edad > 29
-  end
-end
-
 def method_missing(symbol, *args, &block)
   if symbol.start_with? "ser_"
-    proc { |it| it.send("#{symbol[4..]}?".to_sym) }
+    asertar "#{symbol[4..]}?"
   else
-    super symbol, *args, &block
+    super(symbol, *args, &block)
   end
 end
 
@@ -69,4 +57,3 @@ def respond_to_missing?(symbol, include_all)
     super(symbol, include_all)
   end
 end
-
