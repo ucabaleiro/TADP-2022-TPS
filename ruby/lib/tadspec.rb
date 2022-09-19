@@ -69,25 +69,29 @@ end
 
 class TADsPec
   def self.testear (*arg)
-    test_suites = arg.empty? ? [] : [arg]
+    test_suites = arg.empty? ? [] : [arg[0]]
+    puts test_suites.to_s
     test_metodos = arg[1..]
-
+    puts test_metodos.to_s
     if test_suites.empty?
       test_suites = ObjectSpace.each_object(Class).map { |it| it }
-    end
-
-    if test_metodos == nil
-      @tests = test_suites.flat_map { |it| it.instance_methods(false).map { |sym| it.instance_method(sym) } }
-                          .filter { |it| it.name.start_with? "testear_que_" }
-    else
-      @tests = test_metodos.flat_map { |metodo| test_suites.map { |suite| suite.method("testear_que_" + metodo.to_s) } }
     end
 
     Object.define_method(:deberia) do |asercion|
       asercion.call(self)
     end
 
-    @tests.each { |it| it.call }
+
+    if test_metodos == nil || test_metodos.empty?
+    #test_suites.flat_map { |it| it.instance_methods(false).map { |sym| it.instance_method(sym) } }
+    #.filter { |it| it.name.start_with? "testear_que_" }#.each { |message| message.call }
+    test_suites.flat_map { |it| it.instance_methods(false).filter { |method| method.name.start_with? "testear_que_" }.each{|message| it.new.send(message)}  }
+    puts "holi.to_s"
+
+    else
+      test_metodos.each  { |metodo| test_suites[0].new.send("testear_que_#{metodo}") } #test_suites.map { |suite| suite.method("testear_que_" + metodo.to_s) } }
+
+    end
 
     Object.undef_method(:deberia)
 
