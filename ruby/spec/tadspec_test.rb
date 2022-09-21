@@ -1,5 +1,4 @@
 require_relative '../lib/tadspec'
-
 class Docente
   def initialize(edad)
     @edad = edad
@@ -21,9 +20,9 @@ class DocenteTest
   end
 end
 
-# nico = Docente.new(30)
-# leandro = Docente.new(22)
-# docentes = [nico, leandro]
+nico = Docente.new(30)
+leandro = Docente.new(22)
+docentes = [nico, leandro]
 
 # puts 1.deberia ser 1.0
 # puts 1.deberia ser_igual 1.0
@@ -34,7 +33,6 @@ end
 # puts 1.deberia menor_a 2
 #
 # puts nico.viejo?.deberia ser true
-# puts "leandro.deberia ser_viejo: #{leandro.deberia ser_viejo}"
 # puts "nico.deberia ser_viejo: #{nico.deberia ser_viejo}"
 #
 # puts leandro.edad.deberia ser uno_de_estos ["pepe", 22, "lala"]
@@ -48,11 +46,11 @@ end
 # puts "leandro deberia tener_edad 22 -- #{leandro.deberia tener_edad 22}"
 # puts "leandro deberia tener_edad 2 -- #{leandro.deberia tener_edad 23}"
 #
-# # puts leandro.deberia tener_nombre "leandro" # falla: no hay atributo nombre
+# puts leandro.deberia tener_nombre "leandro" # falla: no hay atributo nombre
 # puts leandro.deberia tener_edad 22 # pasa
-# puts leandro.deberia tener_nombre nil # pasa
+# puts leandro.deberia tener_nombre n=il # pasa
 # puts leandro.deberia(self.tener_edad(self.mayor_a(20))) # pasa
 # puts leandro.deberia tener_edad menor_a 21 # pasa
 # puts leandro.deberia tener_edad uno_de_estos [7, 22, "hola"] # pasa
 
-TADsPec.testear
+# TADsPec.testear
