@@ -2,29 +2,25 @@ require_relative './asercion'
 require_relative './aserciones'
 require_relative './asertable'
 require_relative './resultado'
+require_relative './test_suite'
 
 class TADsPec
-  def self.testear (*arg)
-    test_suites = arg.empty? ? [] : [arg]
-    if test_suites.empty?
-      test_suites = ObjectSpace.each_object(Class).map { |it| it }
+  class << self
+    def testear(clase = nil, *metodos)
+      Object.include Asertable
+      suites = clase.nil? ? todas_las_test_suites : [TestSuite.new(clase)]
+      suites.map { |it| it.testear(*metodos) }
     end
 
-    test_metodos = arg[1..]
-    if test_metodos == nil
-      # TODO: Bindear a una instancia de la test suite
-      @tests = test_suites.flat_map { |it| it.instance_methods(false).map { |sym| it.instance_method(sym) } }
-                          .filter { |it| it.name.start_with? "testear_que_" }
-    else
-      @tests = test_metodos.flat_map { |metodo| test_suites.map { |suite| suite.method("testear_que_" + metodo.to_s) } }
+    def todas_las_test_suites
+      ObjectSpace.each_object(Class)
+                 .filter { |it| es_test_suite it }
+                 .map { |it| TestSuite.new it }
     end
 
-    Object.define_method(:deberia) do |asercion|
-      asercion.call(self)
+    def es_test_suite(clase)
+      clase.instance_methods(false)
+           .any? { |symbol| symbol.to_s.start_with? "testear_que" }
     end
-
-    @tests.each { |it| it.call }
-
-    Object.undef_method(:deberia)
   end
 end
