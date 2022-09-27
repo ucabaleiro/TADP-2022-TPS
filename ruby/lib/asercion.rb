@@ -17,7 +17,7 @@ class Asercion
   def ejecutar_en(objeto)
     valor_obtenido = @pasos.inject(objeto) { |o, proc| proc.call(o) }
     pasa = @proc.call(valor_obtenido)
-    ResultadoAsercion.new(self, pasa)
+    ResultadoAsercion.new(@nombre, @valor_esperado, valor_obtenido, pasa)
   end
 
 end

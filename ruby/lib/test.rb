@@ -10,12 +10,12 @@ class Test
       singleton_class.include Aserciones
       begin
         send("testear_que_#{nombre}")
-        # TODO: El test pasó
+        # TODO: El test pasó: clase, nombre
       rescue NoPasoAsercion => error
         error.resultado
-        # TODO: El test falló
+        # TODO: El test falló: clase, nombre, resultado(nombre, valor_esperado, valor_obtenido)
       rescue StandardError => error
-        # TODO: El test explotó
+        # TODO: El test explotó clase, nombre, error
       end
     end
   end
