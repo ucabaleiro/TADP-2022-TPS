@@ -1,7 +1,7 @@
 require_relative './asercion'
 require_relative './aserciones'
 require_relative './asertable'
-require_relative './resultado'
+require_relative './resultado_asercion'
 require_relative './test_suite'
 
 class TADsPec

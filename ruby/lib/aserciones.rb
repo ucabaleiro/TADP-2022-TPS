@@ -1,26 +1,26 @@
 module Aserciones
-  def ser(valor_o_asercion)
+  def ser(valor_o_asercion, texto = "ser")
     if valor_o_asercion.is_a? Asercion
       valor_o_asercion
     else
-      Asercion.new { |it| it.equal? valor_o_asercion }
+      Asercion.new(texto, valor_o_asercion) { |it| it.equal? valor_o_asercion }
     end
   end
 
   def ser_igual(valor)
-    Asercion.new { |it| it == valor }
+    Asercion.new("ser igual a", valor) { |it| it == valor }
   end
 
   def menor_a(valor)
-    Asercion.new { |it| it < valor }
+    Asercion.new("ser menor a", valor) { |it| it < valor }
   end
 
   def mayor_a(valor)
-    Asercion.new { |it| it > valor }
+    Asercion.new("ser mayor a", valor) { |it| it > valor }
   end
 
   def entender(simbolo)
-    Asercion.new { |it| it.respond_to? simbolo }
+    Asercion.new("entender", simbolo) { |it| it.respond_to? simbolo }
   end
 
   def uno_de_estos(primer_valor, *otros_valores)
@@ -29,7 +29,7 @@ module Aserciones
     else
       valores = [primer_valor, *otros_valores]
     end
-    Asercion.new { |it| valores.include? it }
+    Asercion.new("uno de estos", valores) { |it| valores.include? it }
   end
 
   def en(&bloque)
@@ -37,7 +37,7 @@ module Aserciones
   end
 
   def explotar_con(error_esperado)
-    Asercion.new do |proc|
+    Asercion.new("explotar con", error_esperado) do |proc|
       begin
         proc.call
       rescue StandardError => error_recibido
@@ -50,9 +50,9 @@ module Aserciones
 
   def method_missing(symbol, *args, &block)
     if symbol.start_with? "ser_"
-      Asercion.new { |it| it.send("#{symbol.to_s.delete_prefix("ser_")}?") }
+      Asercion.new(symbol.to_s, true) { |it| it.send("#{symbol.to_s.delete_prefix("ser_")}?") }
     elsif symbol.start_with? "tener_"
-      ser(args[0]).desde do |it|
+      ser(args[0], symbol.to_s).desde do |it|
         it.instance_variable_get("@#{symbol.to_s.delete_prefix("tener_")}")
       end
     else
