@@ -14,9 +14,8 @@ class TestSuite
   end
 
   def testear(*metodos)
-    if metodos.empty?
-      metodos.push(*tests)
-    end
+    metodos.push(*tests) if metodos.empty?
+
     metodos.map do |metodo|
       @clase.new.instance_eval do
         singleton_class.include Aserciones

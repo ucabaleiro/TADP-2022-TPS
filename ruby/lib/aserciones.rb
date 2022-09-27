@@ -36,12 +36,12 @@ module Aserciones
     bloque
   end
 
-  def explotar_con(error)
-    Asercion.new do |it|
+  def explotar_con(error_esperado)
+    Asercion.new do |proc|
       begin
-        it.call
-      rescue => error_recibido
-        error_recibido.is_a? error
+        proc.call
+      rescue StandardError => error_recibido
+        error_recibido.is_a? error_esperado
       else
         false
       end

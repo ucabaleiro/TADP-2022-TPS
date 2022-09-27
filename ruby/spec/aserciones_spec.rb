@@ -15,10 +15,7 @@ end
 
 describe "Aserciones" do
   include Aserciones
-
-  class Object
-    include Asertable
-  end
+  Asertable.incluir_en Object
 
   let(:nico) do
     Docente.new(30)
@@ -180,7 +177,7 @@ describe "Aserciones" do
     end
 
     it "falla si tira otro error" do
-      resultado = en { leandro.nombre }.deberia explotar_con ZeroDivisionError
+      resultado = en { 7 / 0 }.deberia explotar_con NoMethodError
       expect(resultado.exitoso?).to be false
     end
   end

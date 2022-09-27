@@ -84,6 +84,11 @@ describe "Tests y Suites" do
       expect(clase_suite.pasa_algo_ejecutado).to be true
       expect(clase_suite.pasa_otra_cosa_ejecutado).to be false
     end
+
+    it "tadspec no debería redefinir deberia por fuera de los tests" do
+      TADsPec.testear
+      expect { Object.new.deberia }.to raise_error NoMethodError
+    end
   end
 
 end

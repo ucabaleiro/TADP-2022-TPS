@@ -7,9 +7,10 @@ require_relative './test_suite'
 class TADsPec
   class << self
     def testear(clase = nil, *metodos)
-      Object.include Asertable
+      Asertable.incluir_en Object
       suites = clase.nil? ? todas_las_test_suites : [TestSuite.new(clase)]
       suites.map { |it| it.testear(*metodos) }
+      Asertable.quitar_de Object
     end
 
     def todas_las_test_suites
