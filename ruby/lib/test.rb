@@ -11,9 +11,8 @@ class Test
       begin
         send("testear_que_#{nombre}")
         # TODO: El test pasó: clase, nombre
-      rescue NoPasoAsercion => error
-        error.resultado
-        # TODO: El test falló: clase, nombre, resultado(nombre, valor_esperado, valor_obtenido)
+      rescue NoPasoAsercion => no_paso_asercion_error
+        # TODO: El test falló: clase, nombre, no_paso_asercion_error(nombre, valor_esperado, valor_obtenido)
       rescue StandardError => error
         # TODO: El test explotó clase, nombre, error
       end

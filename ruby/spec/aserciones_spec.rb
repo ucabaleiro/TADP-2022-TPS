@@ -28,7 +28,7 @@ describe "Aserciones" do
   context "deberia ser" do
     it "es exitoso si el objeto es el mismo" do
       resultado = 7.deberia ser 7
-      expect(resultado.pasa?).to be true
+      expect(resultado).to be true
     end
 
     it "es exitoso si el objeto no es el mismo" do
@@ -39,7 +39,7 @@ describe "Aserciones" do
   context "deberia ser_igual" do
     it "es exitoso si el objeto es equivalente" do
       resultado = nico.edad.deberia ser_igual 30.0
-      expect(resultado.pasa?).to be true
+      expect(resultado).to be true
     end
 
     it "no es exitoso si el objeto no es equivalente" do
@@ -50,7 +50,7 @@ describe "Aserciones" do
   context "deberia ser mayor_a" do
     it "es exitoso si el valor es mayor a otro" do
       resultado = leandro.edad.deberia ser mayor_a 21
-      expect(resultado.pasa?).to be true
+      expect(resultado).to be true
     end
 
     it "no es exitoso si el valor es igual o menor a otro" do
@@ -61,7 +61,7 @@ describe "Aserciones" do
   context "deberia ser menor_a" do
     it "es exitoso si el valor es menor a otro" do
       resultado = leandro.edad.deberia ser menor_a 23
-      expect(resultado.pasa?).to be true
+      expect(resultado).to be true
     end
 
     it "no es exitoso si el valor es igual o mayor a otro" do
@@ -72,7 +72,7 @@ describe "Aserciones" do
   context "deberia ser uno_de_estos" do
     it "es exitoso si recibe una lista y contiene alguno de los elementos" do
       resultado = leandro.edad.deberia ser uno_de_estos [7, 22, "hola"]
-      expect(resultado.pasa?).to be true
+      expect(resultado).to be true
     end
 
     it "no es exitoso si recibe una lista y no contiene ninguno de los elementos" do
@@ -81,7 +81,7 @@ describe "Aserciones" do
 
     it "es exitoso si recibe varargs y contiene alguno de los argumentos" do
       resultado = leandro.edad.deberia ser uno_de_estos [7], 22, "hola"
-      expect(resultado.pasa?).to be true
+      expect(resultado).to be true
     end
 
     it "no es exitoso si recibe varargs y no contiene ninguno de los argumentos" do
@@ -92,7 +92,7 @@ describe "Aserciones" do
   context "deberia ser_" do
     it "es exitoso si entiende la pregunta y devuelve true" do
       resultado = nico.deberia ser_viejo
-      expect(resultado.pasa?).to be true
+      expect(resultado).to be true
     end
 
     it "no es exitoso si entiende la pregunta pero devuelve false" do
@@ -107,7 +107,7 @@ describe "Aserciones" do
   context "deberia tener_" do
     it "es exitoso si entiende el mensaje y el retorno es igual al valor recibido" do
       resultado = leandro.deberia tener_edad 22
-      expect(resultado.pasa?).to be true
+      expect(resultado).to be true
     end
 
     it "no es exitoso si entiende el mensaje pero el retorno no es igual al valor recibido" do
@@ -120,12 +120,12 @@ describe "Aserciones" do
 
     it "es exitoso si no entiende el mensaje pero el valor recibido es nil" do
       resultado = nico.deberia tener_nombre nil
-      expect(resultado.pasa?).to be true
+      expect(resultado).to be true
     end
 
     it "es exitoso si entiende el mensaje y su valor de retorno cumple con la aserción recibida" do
       resultado = leandro.deberia tener_edad mayor_a 21
-      expect(resultado.pasa?).to be true
+      expect(resultado).to be true
     end
 
     it "no es exitoso si entiende el mensaje pero su valor de retorno no cumple con la aserción recibida" do
@@ -136,12 +136,12 @@ describe "Aserciones" do
   context "deberia entender" do
     it "es exitoso si entiende un mensaje propio" do
       resultado = leandro.deberia entender :viejo?
-      expect(resultado.pasa?).to be true
+      expect(resultado).to be true
     end
 
     it "es exitoso si entiende un mensaje heredado" do
       resultado = leandro.deberia entender :class
-      expect(resultado.pasa?).to be true
+      expect(resultado).to be true
     end
 
     it "no es exitoso si no entiende el mensaje" do
@@ -153,12 +153,12 @@ describe "Aserciones" do
   context "deberia explotar" do
     it "es exitoso si arroja el error esperado" do
       resultado = en { leandro.nombre }.deberia explotar_con NoMethodError
-      expect(resultado.pasa?).to be true
+      expect(resultado).to be true
     end
 
     it "es exitoso si arroja un error que es subclase del esperado" do
       resultado = en { leandro.nombre }.deberia explotar_con StandardError
-      expect(resultado.pasa?).to be true
+      expect(resultado).to be true
     end
 
     it "falla si no tira error" do
