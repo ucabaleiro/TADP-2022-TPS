@@ -1,4 +1,5 @@
 require_relative './resultado'
+require_relative './mock'
 
 class Test
   def initialize(nombre, clase)
@@ -13,12 +14,14 @@ class Test
       singleton_class.include Aserciones
       begin
         send("testear_que_#{nombre}")
-        ResultadoExitoso.new(clase, nombre)
+        resultado = ResultadoExitoso.new(clase, nombre)
       rescue NoPasoAsercion => no_paso_asercion_error
-        ResultadoFallido.new(clase, nombre, no_paso_asercion_error)
+        resultado = ResultadoFallido.new(clase, nombre, no_paso_asercion_error)
       rescue StandardError => error
-        ResultadoExplotado.new(clase,nombre,error)
+        resultado = ResultadoExplotado.new(clase,nombre,error)
       end
+      Mock.restaurar
+      resultado
     end
   end
 end

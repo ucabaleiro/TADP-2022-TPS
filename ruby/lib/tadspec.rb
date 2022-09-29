@@ -7,6 +7,7 @@ require_relative './no_paso_asercion'
 require_relative './test'
 require_relative './test_suite'
 require_relative './resultado'
+require_relative './mock'
 
 class TADsPec
   class << self
