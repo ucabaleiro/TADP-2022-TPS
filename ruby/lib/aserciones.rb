@@ -50,9 +50,11 @@ module Aserciones
 
   def method_missing(symbol, *args, &block)
     if symbol.start_with? "ser_"
-      Asercion.new(symbol.to_s, true) { |it| it.send("#{symbol.to_s.delete_prefix("ser_")}?") }
+      Asercion.new("ser #{symbol.to_s.delete_prefix("ser_")}", true) do |it|
+        it.send("#{symbol.to_s.delete_prefix("ser_")}?")
+      end
     elsif symbol.start_with? "tener_"
-      ser(args[0], symbol.to_s).desde do |it|
+      ser(args[0], "tener #{symbol.to_s.delete_prefix("tener_")}").desde do |it|
         it.instance_variable_get("@#{symbol.to_s.delete_prefix("tener_")}")
       end
     else

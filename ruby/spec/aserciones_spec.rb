@@ -145,7 +145,6 @@ describe "Aserciones" do
     end
 
     it "no es exitoso si no entiende el mensaje" do
-
       expect { leandro.deberia entender :nombre }.to raise_error NoPasoAsercion
     end
   end
@@ -168,7 +167,6 @@ describe "Aserciones" do
     end
 
     it "falla si tira otro error" do
-      resultado =
       expect do
         en { 7 / 0 }.deberia explotar_con NoMethodError
       end.to raise_error NoPasoAsercion
