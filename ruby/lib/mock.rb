@@ -7,8 +7,7 @@ module Mock
   def self.restaurar
     @mocks ||= []
     @mocks.each do |metodo|
-      # TODO: NO ANDA!!!!!!!! xdn't
-      metodo.receiver.define_singleton_method(metodo.name, metodo.to_proc)
+      metodo.receiver.define_singleton_method(metodo.name, metodo)
     end
   end
 

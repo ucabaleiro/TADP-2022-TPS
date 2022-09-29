@@ -56,9 +56,9 @@ describe "Mocks" do
       [nico, axel, lean]
     end
 
-    viejos = PersonaHome.personas_viejas
-
     Mock.restaurar
+
+    viejos = PersonaHome.personas_viejas
 
     expect(viejos).not_to match_array [nico, axel]
   end
