@@ -3,15 +3,16 @@ class Spy
     @mensajes_recibidos = []
     @metodos_originales = {}
 
-    objeto_espiado.instance_variable_set("@spy", self)
-
     objeto_espiado.methods.map do |sym|
       @metodos_originales[sym] = objeto_espiado.method(sym)
     end
 
+    spy = self
     objeto_espiado.methods.each do |simbolo|
-      objeto_espiado.define_singleton_method(simbolo) do |*args, &bloque|
-        @spy.enviar_mensaje(simbolo, *args, &bloque)
+      if se_puede_espiar(simbolo)
+        objeto_espiado.define_singleton_method(simbolo) do |*args, &bloque|
+          spy.enviar_mensaje(simbolo, *args, &bloque)
+        end
       end
     end
   end
@@ -42,9 +43,15 @@ class Spy
   end
 
   def revertir
-    @metodos_originales[:remove_instance_variable].call(:@spy)
-    @metodos_originales.keys.each do |sym|
-      @metodos_originales[:singleton_class].call.remove_method(sym)
+    @metodos_originales.keys.each do |simbolo|
+      if se_puede_espiar(simbolo)
+        @metodos_originales[:singleton_class].call.remove_method(simbolo)
+      end
     end
+  end
+
+  private
+  def se_puede_espiar(simbolo)
+    simbolo != :object_id && simbolo != :__send__
   end
 end
