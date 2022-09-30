@@ -1,34 +1,24 @@
 require_relative './helpers'
 
-class Persona
-  def initialize(edad)
-    @edad = edad
-  end
-
-  def edad
-    @edad
-  end
-
-  def viejo?
-    @edad > 29
-  end
-end
-
 class PersonaHome
-  def self.todas_las_personas
+  include Singleton
+
+  def todas_las_personas
     # Este método consume un servicio web que consulta una base de datos
   end
 
-  def self.personas_viejas
+  def personas_viejas
     self.todas_las_personas.select{|p| p.viejo?}
   end
 end
 
 describe "Mocks" do
-  include Aserciones
-  class Object
-    include Asertable
-    include Mock
+  before do
+    TADsPec.incluir Mockeable
+  end
+
+  after do
+    TADsPec.excluir Mockeable
   end
 
   it "Se mockea regio" do
@@ -37,11 +27,11 @@ describe "Mocks" do
     lean = Persona.new(22)
 
     # Mockeo el mensaje para no consumir el servicio y simplificar el test
-    PersonaHome.mockear(:todas_las_personas) do
+    PersonaHome.instance.mockear(:todas_las_personas) do
       [nico, axel, lean]
     end
 
-    viejos = PersonaHome.personas_viejas
+    viejos = PersonaHome.instance.personas_viejas
 
     expect(viejos).to match_array [nico, axel]
   end
@@ -52,13 +42,13 @@ describe "Mocks" do
     lean = Persona.new(22)
 
     # Mockeo el mensaje para no consumir el servicio y simplificar el test
-    PersonaHome.mockear(:todas_las_personas) do
+    PersonaHome.instance.mockear(:todas_las_personas) do
       [nico, axel, lean]
     end
 
-    Mock.restaurar
+    Mockeable.restaurar
 
-    viejos = PersonaHome.personas_viejas
+    viejos = PersonaHome.instance.personas_viejas
 
     expect(viejos).not_to match_array [nico, axel]
   end

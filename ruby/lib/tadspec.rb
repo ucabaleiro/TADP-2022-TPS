@@ -7,15 +7,17 @@ require_relative './no_paso_asercion'
 require_relative './test'
 require_relative './test_suite'
 require_relative './resultado'
-require_relative './mock'
+require_relative './mockeable'
 
 class TADsPec
   class << self
     def testear(clase = nil, *metodos)
-      Asertable.incluir_en Object
       suites = clase.nil? ? todas_las_test_suites : [TestSuite.new(clase)]
+
+      incluir Asertable, Mockeable
       resultados = suites.flat_map { |it| it.testear(*metodos) }
-      Asertable.quitar_de Object
+      excluir Asertable, Mockeable
+
       ResultadoTADsPec.new(resultados).imprimir
     end
 
@@ -28,6 +30,22 @@ class TADsPec
     def es_test_suite(clase)
       clase.instance_methods(false)
            .any? { |symbol| symbol.to_s.start_with? "testear_que" }
+    end
+
+    def incluir(*modulos)
+      modulos.each do |modulo|
+        modulo.instance_methods.each do |sym|
+          Object.define_method(sym, modulo.instance_method(sym))
+        end
+      end
+    end
+
+    def excluir(*modulos)
+      modulos.each do |modulo|
+        modulo.instance_methods.each do |sym|
+          Object.undef_method(sym)
+        end
+      end
     end
   end
 end

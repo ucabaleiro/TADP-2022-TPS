@@ -1,28 +1,22 @@
 require_relative './helpers'
 
-class Docente
-  def initialize(edad)
-    @edad = edad
-  end
-  def edad
-    @edad
-  end
-  def viejo?
-    @edad > 29
-  end
-end
-
-
 describe "Aserciones" do
   include Aserciones
-  Asertable.incluir_en Object
 
   let(:nico) do
-    Docente.new(30)
+    Persona.new(30)
   end
 
   let(:leandro) do
-    Docente.new(22)
+    Persona.new(22)
+  end
+
+  before do
+    TADsPec.incluir Asertable
+  end
+
+  after do
+    TADsPec.excluir Asertable
   end
 
   context "deberia ser" do

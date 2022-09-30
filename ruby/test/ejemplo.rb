@@ -55,4 +55,16 @@ class DocenteTestsQuePasa
   end
 end
 
+class DocenteTestsQueMockea
+  def testear_que_un_test_mockea
+    nico = Docente.new(30)
+
+    nico.mockear(:viejo?) do
+      false
+    end
+
+    nico.viejo?.deberia ser false
+  end
+end
+
 TADsPec.testear

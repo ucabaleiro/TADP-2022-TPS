@@ -1,4 +1,4 @@
-module Mock
+module Mockeable
   def self.guardar(metodo)
     @mocks ||= []
     @mocks << metodo
@@ -12,7 +12,7 @@ module Mock
   end
 
   def mockear(nombre, &bloque)
-    Mock.guardar(method(nombre))
+    Mockeable.guardar(method(nombre))
     define_singleton_method(nombre, &bloque)
   end
 end

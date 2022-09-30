@@ -1,5 +1,5 @@
 require_relative './resultado'
-require_relative './mock'
+require_relative './mockeable'
 
 class Test
   def initialize(nombre, clase)
@@ -20,7 +20,7 @@ class Test
       rescue StandardError => error
         resultado = ResultadoExplotado.new(clase,nombre,error)
       end
-      Mock.restaurar
+      Mockeable.restaurar
       resultado
     end
   end
