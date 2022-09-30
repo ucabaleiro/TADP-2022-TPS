@@ -3,11 +3,12 @@ require 'colorize'
 require_relative './asercion'
 require_relative './aserciones'
 require_relative './asertable'
+require_relative './mockeable'
 require_relative './no_paso_asercion'
+require_relative './resultado'
+require_relative './spy'
 require_relative './test'
 require_relative './test_suite'
-require_relative './resultado'
-require_relative './mockeable'
 
 class TADsPec
   class << self
