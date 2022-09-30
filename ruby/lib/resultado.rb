@@ -114,8 +114,8 @@ class ResultadoExplotado
   end
 
   def imprimir
-    puts "\t\u{1f4a9} El test #{@clase_suite.to_s}:#{@nombre} explotó:".red
-    puts "\t\t\t\t#{@error.backtrace.join("\n\t\t\t\t")}"
+    puts "\t\u{1f4a9} El test #{@nombre} explotó con #{@error.class}:".red
+    puts "\t\t#{@error.backtrace.join("\n\t\t")}"
   end
 
 end

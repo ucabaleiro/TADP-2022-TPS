@@ -15,7 +15,7 @@ class TADsPec
       suites = clase.nil? ? todas_las_test_suites : [TestSuite.new(clase)]
 
       incluir Asertable, Mockeable
-      resultados = suites.flat_map { |it| it.testear(*metodos) }
+      resultados = suites.map { |it| it.testear(*metodos) }
       excluir Asertable, Mockeable
 
       ResultadoTADsPec.new(resultados).imprimir

@@ -33,9 +33,8 @@ describe "Mocks" do
 
     viejos = PersonaHome.new.personas_viejas
 
-
     expect(viejos).to match_array [nico, axel]
-     end
+  end
 
   it "Se desmockea aún mejor" do
     nico = Persona.new(30)
@@ -46,10 +45,6 @@ describe "Mocks" do
     PersonaHome.mockear(:todas_las_personas) do
       [nico, axel, lean]
     end
-
-    viejos = PersonaHome.new.personas_viejas
-
-    expect(viejos).to match_array [nico, axel]
 
     Mockeable.restaurar
 
