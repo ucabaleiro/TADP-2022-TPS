@@ -2,6 +2,7 @@ require_relative './helpers'
 
 describe "Aserciones" do
   include Aserciones
+  include Espiable
 
   let(:nico) do
     Persona.new(30)
@@ -168,6 +169,57 @@ describe "Aserciones" do
   end
 
   context "deberia haber recibido" do
+    it "es exitoso si el objeto recibió el mensaje" do
+      spy = espiar(leandro)
+
+      leandro.viejo?
+
+      resultado = spy.deberia haber_recibido :edad
+      expect(resultado).to be true
+    end
+
+    it "no es exitoso si el objeto no recibió el mensaje" do
+      spy = espiar(leandro)
+
+      expect { spy.deberia haber_recibido :edad }.to raise_error AsercionNoPasoError
+    end
+
+    it "es exitoso si el objeto recibió el mensaje con los argumentos" do
+      spy = espiar(leandro)
+
+      leandro.viejo?
+
+      resultado = spy.deberia haber_recibido(:viejo?).con_argumentos
+      expect(resultado).to be true
+    end
+
+    it "no es exitoso si el objeto recibió el mensaje pero con otros argumentos" do
+      spy = espiar(leandro)
+
+      expect do
+        spy.deberia haber_recibido(:edad?).con_argumentos 22
+      end.to raise_error AsercionNoPasoError
+    end
+
+    it "es exitoso si el objeto recibió el mensaje la cantidad de veces esperada" do
+      spy = espiar(leandro)
+
+      leandro.viejo?
+      leandro.viejo?
+
+      resultado = spy.deberia haber_recibido(:viejo?).veces(2)
+      expect(resultado).to be true
+    end
+
+    it "no es exitoso si el objeto recibió el mensaje distintas veces de las esperadas" do
+      spy = espiar(leandro)
+
+      leandro.viejo?
+
+      expect do
+        spy.deberia haber_recibido(:viejo?).veces(2)
+      end.to raise_error AsercionNoPasoError
+    end
 
   end
 end

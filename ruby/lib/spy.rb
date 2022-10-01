@@ -38,16 +38,20 @@ class Spy
     @metodos_originales[mensaje].call(*args, &bloque)
   end
 
-  def recibio?(metodo)
-    @mensajes_recibidos.any? { |mensaje| mensaje[:mensaje] == metodo }
+  def recibio?(mensaje)
+    cuantas_veces_recibio(mensaje) > 0
   end
 
   def recibio_con_argumentos?(mensaje, *args)
     @mensajes_recibidos.any? { |m| m[:mensaje] == mensaje && m[:args] == args }
   end
 
+  def cuantas_veces_recibio(mensaje)
+    @mensajes_recibidos.count { |m| m[:mensaje] == mensaje }
+  end
+
   def recibio_n_veces?(mensaje, veces)
-    @mensajes_recibidos.count { |m| m[:mensaje] == mensaje } == veces
+    cuantas_veces_recibio(mensaje) == veces
   end
 
   def revertir

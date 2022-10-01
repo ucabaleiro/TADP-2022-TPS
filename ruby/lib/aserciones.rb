@@ -71,14 +71,16 @@ module Aserciones
     end
   end
 
-  # def haber_recibido(mensaje)
-  #   Asercion.new("haber recibido", mensaje) do |spy|
-  #     unless spy.is_a? Spy
-  #       false
-  #     end
-  #     spy.recibio? mensaje
-  #   end
-  # end
+  def haber_recibido(mensaje)
+    AsercionSobreSpy.new(mensaje) do |spy|
+      if not spy.is_a? Spy
+        raise AsercionNoPasoError.new("ser un", Spy, spy.class)
+      elsif not spy.recibio? mensaje
+        raise AsercionNoPasoError.new("haber recibido", mensaje, false)
+      end
+      spy
+    end
+  end
 
   def method_missing(symbol, *args, &block)
     if symbol.start_with? "ser_"
