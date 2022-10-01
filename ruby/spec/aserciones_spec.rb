@@ -26,7 +26,7 @@ describe "Aserciones" do
     end
 
     it "es exitoso si el objeto no es el mismo" do
-      expect{ leandro.edad.deberia ser 22.0 }.to raise_error NoPasoAsercion
+      expect{ leandro.edad.deberia ser 22.0 }.to raise_error AsercionNoPasoError
     end
   end
 
@@ -37,7 +37,7 @@ describe "Aserciones" do
     end
 
     it "no es exitoso si el objeto no es equivalente" do
-      expect { nico.edad.deberia ser_igual 31 }.to raise_error NoPasoAsercion
+      expect { nico.edad.deberia ser_igual 31 }.to raise_error AsercionNoPasoError
     end
   end
 
@@ -48,7 +48,7 @@ describe "Aserciones" do
     end
 
     it "no es exitoso si el valor es igual o menor a otro" do
-      expect { leandro.edad.deberia ser mayor_a 22 }.to raise_error NoPasoAsercion
+      expect { leandro.edad.deberia ser mayor_a 22 }.to raise_error AsercionNoPasoError
     end
   end
 
@@ -59,7 +59,7 @@ describe "Aserciones" do
     end
 
     it "no es exitoso si el valor es igual o mayor a otro" do
-      expect { leandro.edad.deberia ser menor_a 22 }.to raise_error NoPasoAsercion
+      expect { leandro.edad.deberia ser menor_a 22 }.to raise_error AsercionNoPasoError
     end
   end
 
@@ -70,7 +70,7 @@ describe "Aserciones" do
     end
 
     it "no es exitoso si recibe una lista y no contiene ninguno de los elementos" do
-      expect { nico.edad.deberia ser uno_de_estos [7, 22, "hola"] }.to raise_error NoPasoAsercion
+      expect { nico.edad.deberia ser uno_de_estos [7, 22, "hola"] }.to raise_error AsercionNoPasoError
     end
 
     it "es exitoso si recibe varargs y contiene alguno de los argumentos" do
@@ -79,7 +79,7 @@ describe "Aserciones" do
     end
 
     it "no es exitoso si recibe varargs y no contiene ninguno de los argumentos" do
-      expect { nico.edad.deberia ser uno_de_estos [30], 22, "hola" }.to raise_error NoPasoAsercion
+      expect { nico.edad.deberia ser uno_de_estos [30], 22, "hola" }.to raise_error AsercionNoPasoError
     end
   end
 
@@ -90,7 +90,7 @@ describe "Aserciones" do
     end
 
     it "no es exitoso si entiende la pregunta pero devuelve false" do
-      expect { leandro.deberia ser_viejo }.to raise_error NoPasoAsercion
+      expect { leandro.deberia ser_viejo }.to raise_error AsercionNoPasoError
     end
 
     it "explota si no entiende la pregunta" do
@@ -105,11 +105,11 @@ describe "Aserciones" do
     end
 
     it "no es exitoso si entiende el mensaje pero el retorno no es igual al valor recibido" do
-      expect { nico.deberia tener_edad 22 }.to raise_error NoPasoAsercion
+      expect { nico.deberia tener_edad 22 }.to raise_error AsercionNoPasoError
     end
 
     it "no es exitoso si no entiende el mensaje y el valor recibido no es nil" do
-      expect { nico.deberia tener_nombre "nico" }.to raise_error NoPasoAsercion
+      expect { nico.deberia tener_nombre "nico" }.to raise_error AsercionNoPasoError
     end
 
     it "es exitoso si no entiende el mensaje pero el valor recibido es nil" do
@@ -123,7 +123,7 @@ describe "Aserciones" do
     end
 
     it "no es exitoso si entiende el mensaje pero su valor de retorno no cumple con la aserción recibida" do
-      expect { leandro.deberia tener_edad menor_a 22 }.to raise_error NoPasoAsercion
+      expect { leandro.deberia tener_edad menor_a 22 }.to raise_error AsercionNoPasoError
     end
   end
 
@@ -139,7 +139,7 @@ describe "Aserciones" do
     end
 
     it "no es exitoso si no entiende el mensaje" do
-      expect { leandro.deberia entender :nombre }.to raise_error NoPasoAsercion
+      expect { leandro.deberia entender :nombre }.to raise_error AsercionNoPasoError
     end
   end
 
@@ -157,13 +157,13 @@ describe "Aserciones" do
     it "falla si no tira error" do
       expect do
         en { leandro.edad }.deberia explotar_con NoMethodError
-      end.to raise_error NoPasoAsercion
+      end.to raise_error AsercionNoPasoError
     end
 
     it "falla si tira otro error" do
       expect do
         en { 7 / 0 }.deberia explotar_con NoMethodError
-      end.to raise_error NoPasoAsercion
+      end.to raise_error AsercionNoPasoError
     end
   end
 end
