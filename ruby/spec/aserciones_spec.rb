@@ -166,4 +166,8 @@ describe "Aserciones" do
       end.to raise_error AsercionNoPasoError
     end
   end
+
+  context "deberia haber recibido" do
+
+  end
 end

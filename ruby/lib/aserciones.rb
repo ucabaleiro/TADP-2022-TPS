@@ -1,35 +1,57 @@
 module Aserciones
-  def ser(valor_o_asercion, texto = "ser")
-    if valor_o_asercion.is_a? Asercion
-      valor_o_asercion
+  def ser(valor_esperado, texto = "ser")
+    if valor_esperado.is_a? Asercion
+      valor_esperado
     else
-      Asercion.new(texto, valor_o_asercion) { |it| it.equal? valor_o_asercion }
+      Asercion.new do |valor_obtenido|
+        unless valor_obtenido.equal? valor_esperado
+          raise AsercionNoPasoError.new(texto, valor_esperado, valor_obtenido)
+        end
+      end
     end
   end
 
-  def ser_igual(valor)
-    Asercion.new("ser igual a", valor) { |it| it == valor }
-  end
-
-  def menor_a(valor)
-    Asercion.new("ser menor a", valor) { |it| it < valor }
-  end
-
-  def mayor_a(valor)
-    Asercion.new("ser mayor a", valor) { |it| it > valor }
-  end
-
-  def entender(simbolo)
-    Asercion.new("entender", simbolo) { |it| it.respond_to? simbolo }
-  end
-
-  def uno_de_estos(primer_valor, *otros_valores)
-    if primer_valor.is_a? Array and otros_valores.empty?
-      valores = primer_valor
-    else
-      valores = [primer_valor, *otros_valores]
+  def ser_igual(valor_esperado)
+    Asercion.new do |valor_obtenido|
+      unless valor_obtenido == valor_esperado
+        raise AsercionNoPasoError.new("ser igual a", valor_esperado, valor_obtenido)
+      end
     end
-    Asercion.new("uno de estos", valores) { |it| valores.include? it }
+  end
+
+  def menor_a(valor_esperado)
+    Asercion.new do |valor_obtenido|
+      unless valor_obtenido < valor_esperado
+        raise AsercionNoPasoError.new("ser menor a", valor_esperado, valor_obtenido)
+      end
+    end
+  end
+
+  def mayor_a(valor_esperado)
+    Asercion.new do |valor_obtenido|
+      unless valor_obtenido > valor_esperado
+        raise AsercionNoPasoError.new("ser mayor a", valor_esperado, valor_obtenido)
+      end
+    end
+  end
+
+  def entender(valor_esperado)
+    Asercion.new do |valor_obtenido|
+      unless valor_obtenido.respond_to? valor_esperado
+        raise AsercionNoPasoError.new("entender", valor_esperado, valor_obtenido)
+      end
+    end
+  end
+
+  def uno_de_estos(*valores_esperados)
+    if valores_esperados[0].is_a? Array and valores_esperados.size == 1
+      valores_esperados = valores_esperados[0]
+    end
+    Asercion.new do |valor_obtenido|
+      unless valores_esperados.include? valor_obtenido
+        raise AsercionNoPasoError.new("ser uno de", valores_esperados, valor_obtenido)
+      end
+    end
   end
 
   def en(&bloque)
@@ -37,16 +59,26 @@ module Aserciones
   end
 
   def explotar_con(error_esperado)
-    Asercion.new("explotar con", error_esperado) do |proc|
+    Asercion.new do |proc|
       begin
-        proc.call
+        valor_obtenido = proc.call
+        raise AsercionNoPasoError.new("explotar con", error_esperado, valor_obtenido)
       rescue StandardError => error_recibido
-        error_recibido.is_a? error_esperado
-      else
-        false
+        unless error_recibido.is_a? error_esperado
+          raise AsercionNoPasoError.new("explotar con", error_esperado, error_recibido)
+        end
       end
     end
   end
+
+  # def haber_recibido(mensaje)
+  #   Asercion.new("haber recibido", mensaje) do |spy|
+  #     unless spy.is_a? Spy
+  #       false
+  #     end
+  #     spy.recibio? mensaje
+  #   end
+  # end
 
   def method_missing(symbol, *args, &block)
     if symbol.start_with? "ser_"
