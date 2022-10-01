@@ -2,8 +2,7 @@ require_relative './helpers'
 
 class PersonaHome
   def todas_las_personas
-    ["jusepe","jusepa"]
-    # Este método consume un servicio web que consulta una base de datos
+    [] # Este método consume un servicio web que consulta una base de datos
   end
 
   def personas_viejas
@@ -14,11 +13,11 @@ end
 
 describe "Mocks" do
   before do
-    TADsPec.incluir Mockeable
+    TADsPec.configurar_en self
   end
 
   after do
-    TADsPec.excluir Mockeable
+    TADsPec.revertir
   end
 
   it "Se mockea regio" do

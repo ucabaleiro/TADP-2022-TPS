@@ -1,9 +1,6 @@
 require_relative './helpers'
 
 describe "Aserciones" do
-  include Aserciones
-  include Espiable
-
   let(:nico) do
     Persona.new(30)
   end
@@ -13,11 +10,11 @@ describe "Aserciones" do
   end
 
   before do
-    TADsPec.incluir Asertable
+    TADsPec.configurar_en self
   end
 
   after do
-    TADsPec.excluir Asertable
+    TADsPec.revertir
   end
 
   context "deberia ser" do
@@ -26,7 +23,7 @@ describe "Aserciones" do
       expect(resultado).to be true
     end
 
-    it "es exitoso si el objeto no es el mismo" do
+    it "no es exitoso si el objeto no es el mismo" do
       expect{ leandro.edad.deberia ser 22.0 }.to raise_error AsercionNoPasoError
     end
   end

@@ -1,14 +1,17 @@
 require_relative './helpers'
 
 describe "Spies" do
-  include Espiable
 
   let(:pato) do
     Persona.new(30)
   end
 
+  before do
+    TADsPec.configurar_en self
+  end
+
   after do
-    Cambios.revertir
+    TADsPec.revertir
   end
 
   it "deberia poder espiar un metodo" do
