@@ -10,7 +10,7 @@ class Test
     nombre = @nombre
     clase_suite = @clase_suite
     clase_suite.new.instance_eval do
-      singleton_class.include Aserciones
+      singleton_class.include Aserciones, Espiable
       begin
         send("testear_que_#{nombre}")
         resultado = ResultadoExitoso.new(clase_suite, nombre)
@@ -19,7 +19,7 @@ class Test
       rescue StandardError => error
         resultado = ResultadoExplotado.new(clase_suite,nombre,error)
       end
-      Mockeable.restaurar
+      Cambios.revertir
       resultado
     end
   end

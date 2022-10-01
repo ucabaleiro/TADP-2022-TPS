@@ -53,13 +53,26 @@ describe "Tests y Suites" do
 
         def testear_que_pasa_algo
           self.class.ejecutada = true
+        end
+
+        def testear_que_funciona_deberia
+          self.class.ejecutada = true
           self.class.ejecutada.deberia ser true
+        end
+
+        def testear_que_funciona_espiar
+          espiar(self.class)
         end
       end
     end
 
     before do
       otra_suite.ejecutada = false
+    end
+
+    it "tadspec ejecuta todas las suites correctamente" do
+      resultado = TADsPec.testear
+      expect(resultado.cantidad_exitosos).to eq(resultado.cantidad)
     end
 
     it "tadspec ejecuta todas las suites sin recibir parámetros" do

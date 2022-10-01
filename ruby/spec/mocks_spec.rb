@@ -46,7 +46,7 @@ describe "Mocks" do
       [nico, axel, lean]
     end
 
-    Mockeable.restaurar
+    Cambios.revertir
 
     viejos = PersonaHome.new.personas_viejas
 

@@ -1,12 +1,18 @@
 require_relative './helpers'
 
 describe "Spies" do
+  include Espiable
+
   let(:pato) do
     Persona.new(30)
   end
 
+  after do
+    Cambios.revertir
+  end
+
   it "deberia poder espiar un metodo" do
-    spy = Spy.new(pato)
+    spy = espiar(pato)
 
     pato.viejo?
 
@@ -14,7 +20,7 @@ describe "Spies" do
   end
 
   it "deberia poder espiar un metodo llamado por otro usando self" do
-    spy = Spy.new(pato)
+    spy = espiar(pato)
 
     pato.viejo?
 
@@ -22,7 +28,7 @@ describe "Spies" do
   end
 
   it "deberia haber recibido el método con los argumentos" do
-    spy = Spy.new(pato)
+    spy = espiar(pato)
 
     pato.viejo?
 
@@ -30,7 +36,7 @@ describe "Spies" do
   end
 
   it "no deberia haber recibido el método con los argumentos incorrectos" do
-    spy = Spy.new(pato)
+    spy = espiar(pato)
 
     pato.viejo?
 
@@ -38,7 +44,7 @@ describe "Spies" do
   end
 
   it "deberia haber recibido el método la cantidad de veces indicada" do
-    spy = Spy.new(pato)
+    spy = espiar(pato)
 
     pato.viejo?
     pato.viejo?
@@ -47,7 +53,7 @@ describe "Spies" do
   end
 
   it "no deberia haber recibido el método la cantidad de veces incorrecta" do
-    spy = Spy.new(pato)
+    spy = espiar(pato)
 
     pato.viejo?
     pato.viejo?
@@ -56,8 +62,8 @@ describe "Spies" do
   end
 
   it "se deberia poder dejar de espiar un metodo" do
-    spy = Spy.new(pato)
-    spy.revertir
+    spy = espiar(pato)
+    Cambios.revertir
 
     pato.viejo?
 

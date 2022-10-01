@@ -8,6 +8,19 @@ require_relative './spy'
 require_relative './test'
 require_relative './test_suite'
 
+module Cambios
+  def self.guardar(metodo)
+    @mocks ||= []
+    @mocks << metodo
+  end
+
+  def self.revertir
+    @mocks ||= []
+    @mocks.each { |mock| mock.revertir }
+    @mocks = []
+  end
+end
+
 class TADsPec
   class << self
     def testear(clase = nil, *metodos)
@@ -17,7 +30,9 @@ class TADsPec
       resultados = suites.map { |it| it.testear(*metodos) }
       excluir Asertable, Mockeable
 
-      ResultadoTADsPec.new(resultados).imprimir
+      resultado = ResultadoTADsPec.new(resultados)
+      resultado.imprimir
+      resultado
     end
 
     def todas_las_test_suites
@@ -66,7 +81,6 @@ class ResultadoTADsPec
     puts "\t#{cantidad_explotados}/#{cantidad} explotaron".red
   end
 
-  private
   def cantidad
     @resultados_suites.sum { |elem| elem.cantidad }
   end

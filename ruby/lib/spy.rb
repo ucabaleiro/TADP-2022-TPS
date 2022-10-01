@@ -1,3 +1,11 @@
+module Espiable
+  def espiar(objeto_espiado)
+    spy = Spy.new(objeto_espiado)
+    Cambios.guardar(spy)
+    spy
+  end
+end
+
 class Spy
   def initialize(objeto_espiado)
     @mensajes_recibidos = []
@@ -43,9 +51,12 @@ class Spy
   end
 
   def revertir
-    @metodos_originales.keys.each do |simbolo|
+    @metodos_originales.each do |simbolo, metodo|
       if se_puede_espiar(simbolo)
         @metodos_originales[:singleton_class].call.remove_method(simbolo)
+      end
+      if metodo.owner == @metodos_originales[:singleton_class].call
+        @metodos_originales[:singleton_class].call.define_method(simbolo, metodo)
       end
     end
   end
