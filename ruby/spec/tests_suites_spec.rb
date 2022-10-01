@@ -105,7 +105,7 @@ describe "Tests y Suites" do
 
     it "tadspec no deberia redefinir :mockear por fuera de los tests" do
       TADsPec.testear
-      expect { Class.new.mockear }.to raise_error NoMethodError
+      expect { Module.new.mockear }.to raise_error NoMethodError
     end
   end
 

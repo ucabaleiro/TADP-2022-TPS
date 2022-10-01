@@ -47,13 +47,13 @@ class TADsPec
     def configurar_en(contexto)
       contexto.singleton_class.include Aserciones, Espiable
       Object.define_method(:deberia, Asertable.instance_method(:deberia))
-      Class.define_method(:mockear, Mockeable.instance_method(:mockear))
+      Module.define_method(:mockear, Mockeable.instance_method(:mockear))
     end
 
     def revertir
       Cambios.revertir
       Object.remove_method(:deberia)
-      Class.remove_method(:mockear)
+      Module.remove_method(:mockear)
     end
   end
 end
