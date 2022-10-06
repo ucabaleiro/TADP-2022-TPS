@@ -51,17 +51,25 @@ describe "Tests y Suites" do
           attr_accessor :ejecutada
         end
 
-        def testear_que_pasa_algo
+        def testear_que_un_test_pasa
           self.class.ejecutada = true
+          true.deberia ser true
         end
 
-        def testear_que_funciona_deberia
-          self.class.ejecutada = true
-          self.class.ejecutada.deberia ser true
-        end
-
-        def testear_que_funciona_espiar
+        def testear_que_se_define_espiar
           espiar(self.class)
+        end
+
+        def testear_que_se_define_mockear
+          metodo_comun.deberia ser true
+          self.class.mockear(:metodo_comun) do
+            false
+          end
+          metodo_comun.deberia ser false
+        end
+
+        def metodo_comun
+          true
         end
       end
     end
@@ -105,8 +113,40 @@ describe "Tests y Suites" do
 
     it "tadspec no deberia redefinir :mockear por fuera de los tests" do
       TADsPec.testear
-      expect { Object.new.mockear }.to raise_error NoMethodError
+      expect { Module.new.mockear }.to raise_error NoMethodError
     end
+
+  end
+
+  context "TADsPec con tests que no pasan" do
+    let(:suite_que_falla) do
+      Class.new do
+        def testear_que_un_test_falla
+          true.deberia ser false
+        end
+      end
+    end
+
+    let(:suite_que_explota) do
+      Class.new do
+        def testear_que_un_test_explota
+          raise StandardError
+        end
+      end
+    end
+
+    it "tadspec ejecuta una suite que falla correctamente" do
+      resultado = TADsPec.testear suite_que_falla
+
+      expect(resultado.cantidad_fallidos).to eq(1)
+    end
+
+    it "tadspec ejecuta una suite que explota correctamente" do
+      resultado = TADsPec.testear suite_que_explota
+
+      expect(resultado.cantidad_explotados).to eq(1)
+    end
+
   end
 
 end

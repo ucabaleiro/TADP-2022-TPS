@@ -59,7 +59,7 @@ class DocenteTestsQueMockea
   def testear_que_un_test_mockea
     nico = Docente.new(30)
 
-    nico.mockear(:viejo?) do
+    Docente.mockear(:viejo?) do
       false
     end
 

@@ -2,8 +2,7 @@ require_relative './helpers'
 
 class PersonaHome
   def todas_las_personas
-    ["jusepe","jusepa"]
-    # Este método consume un servicio web que consulta una base de datos
+    [] # Este método consume un servicio web que consulta una base de datos
   end
 
   def personas_viejas
@@ -11,14 +10,27 @@ class PersonaHome
   end
 end
 
+module Nombrable
+  attr_reader :nombre
+
+  def initialize(nombre)
+    @nombre = nombre
+  end
+end
 
 describe "Mocks" do
+  let(:clase_nombrable) do
+    Class.new do
+      include Nombrable
+    end
+  end
+
   before do
-    TADsPec.incluir Mockeable
+    TADsPec.configurar_en self
   end
 
   after do
-    TADsPec.excluir Mockeable
+    TADsPec.revertir
   end
 
   it "Se mockea regio" do
@@ -51,5 +63,27 @@ describe "Mocks" do
     viejos = PersonaHome.new.personas_viejas
 
     expect(viejos).not_to match_array [nico, axel]
+  end
+
+  it "También se mockea con mixins" do
+    nico = clase_nombrable.new("Nico")
+
+    Nombrable.mockear(:nombre) do
+      "Giusepe"
+    end
+
+    expect(nico.nombre).to eq "Giusepe"
+  end
+
+  it "También se desmockea con mixins" do
+    nico = clase_nombrable.new("Nico")
+
+    Nombrable.mockear(:nombre) do
+      "Giusepa"
+    end
+
+    Cambios.revertir
+
+    expect(nico.nombre).to eq "Nico"
   end
 end

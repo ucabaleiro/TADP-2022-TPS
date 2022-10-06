@@ -1,9 +1,6 @@
 require_relative './helpers'
 
 describe "Aserciones" do
-  include Aserciones
-  include Espiable
-
   let(:nico) do
     Persona.new(30)
   end
@@ -13,11 +10,11 @@ describe "Aserciones" do
   end
 
   before do
-    TADsPec.incluir Asertable
+    TADsPec.configurar_en self
   end
 
   after do
-    TADsPec.excluir Asertable
+    TADsPec.revertir
   end
 
   context "deberia ser" do
@@ -26,7 +23,7 @@ describe "Aserciones" do
       expect(resultado).to be true
     end
 
-    it "es exitoso si el objeto no es el mismo" do
+    it "no es exitoso si el objeto no es el mismo" do
       expect{ leandro.edad.deberia ser 22.0 }.to raise_error AsercionNoPasoError
     end
   end
@@ -196,8 +193,10 @@ describe "Aserciones" do
     it "no es exitoso si el objeto recibió el mensaje pero con otros argumentos" do
       spy = espiar(leandro)
 
+      leandro.viejo?
+
       expect do
-        spy.deberia haber_recibido(:edad?).con_argumentos 22
+        spy.deberia haber_recibido(:viejo?).con_argumentos 22
       end.to raise_error AsercionNoPasoError
     end
 
@@ -218,6 +217,15 @@ describe "Aserciones" do
 
       expect do
         spy.deberia haber_recibido(:viejo?).veces(2)
+      end.to raise_error AsercionNoPasoError
+    end
+
+    it "no es exitoso si el objeto no es un spy" do
+      leandro.viejo?
+      leandro.viejo?
+
+      expect do
+        leandro.deberia haber_recibido(:viejo?).veces(2)
       end.to raise_error AsercionNoPasoError
     end
 

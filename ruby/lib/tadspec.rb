@@ -26,9 +26,7 @@ class TADsPec
     def testear(clase = nil, *metodos)
       suites = clase.nil? ? todas_las_test_suites : [TestSuite.new(clase)]
 
-      incluir Asertable, Mockeable
       resultados = suites.map { |it| it.testear(*metodos) }
-      excluir Asertable, Mockeable
 
       resultado = ResultadoTADsPec.new(resultados)
       resultado.imprimir
@@ -46,20 +44,16 @@ class TADsPec
            .any? { |symbol| symbol.to_s.start_with? "testear_que" }
     end
 
-    def incluir(*modulos)
-      modulos.each do |modulo|
-        modulo.instance_methods.each do |sym|
-          Object.define_method(sym, modulo.instance_method(sym))
-        end
-      end
+    def configurar_en(contexto)
+      contexto.singleton_class.include Aserciones, Espiable
+      Object.define_method(:deberia, Asertable.instance_method(:deberia))
+      Module.define_method(:mockear, Mockeable.instance_method(:mockear))
     end
 
-    def excluir(*modulos)
-      modulos.each do |modulo|
-        modulo.instance_methods.each do |sym|
-          Object.undef_method(sym)
-        end
-      end
+    def revertir
+      Cambios.revertir
+      Object.remove_method(:deberia)
+      Module.remove_method(:mockear)
     end
   end
 end

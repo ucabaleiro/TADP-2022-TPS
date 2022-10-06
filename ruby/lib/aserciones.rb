@@ -73,9 +73,9 @@ module Aserciones
 
   def haber_recibido(mensaje)
     AsercionSobreSpy.new(mensaje) do |spy|
-      if not spy.is_a? Spy
+      if ! spy.is_a? Spy
         raise AsercionNoPasoError.new("ser un", Spy, spy.class)
-      elsif not spy.recibio? mensaje
+      elsif ! spy.recibio? mensaje
         raise AsercionNoPasoError.new("haber recibido", mensaje, false)
       end
       spy

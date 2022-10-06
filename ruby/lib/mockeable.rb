@@ -5,12 +5,16 @@ module Mockeable
 end
 
 class Mock
-  def initialize(clase, metodo, &implementacion)
-    @metodo_original = clase.instance_method(metodo)
-    clase.define_method(metodo, &implementacion)
+  def initialize(clase, mensaje, &implementacion)
+    @clase = clase
+    @metodo_original = clase.instance_method(mensaje)
+    clase.define_method(mensaje, &implementacion)
   end
 
   def revertir
-    @metodo_original.owner.define_method(@metodo_original.name, @metodo_original)
+    @metodo_original.owner.remove_method(@metodo_original.name)
+    if @metodo_original.owner == @clase
+      @metodo_original.owner.define_method(@metodo_original.name, @metodo_original)
+    end
   end
 end
