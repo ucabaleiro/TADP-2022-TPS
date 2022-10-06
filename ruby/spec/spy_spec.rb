@@ -72,4 +72,11 @@ describe "Spies" do
 
     expect(spy.recibio? :viejo?).to be false
   end
+
+  it "se debe poder enviar mensajes al espia y que los reciba el espiado" do
+    spy = espiar(pato)
+
+    expect(spy.viejo?).to be true
+    expect(spy.deberia haber_recibido :viejo?).to be true
+  end
 end
