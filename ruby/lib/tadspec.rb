@@ -4,6 +4,8 @@ require_relative './asercion_no_paso_error'
 require_relative './aserciones'
 require_relative './asertable'
 require_relative './mockeable'
+require_relative './printer_json'
+require_relative './printer_texto'
 require_relative './spy'
 require_relative './test'
 require_relative './test_suite'
@@ -29,7 +31,7 @@ class TADsPec
       resultados = suites.map { |it| it.testear(*metodos) }
 
       resultado = ResultadoTADsPec.new(resultados)
-      resultado.imprimir
+      resultado.imprimir(PrinterTexto.new)
       resultado
     end
 
@@ -59,20 +61,14 @@ class TADsPec
 end
 
 class ResultadoTADsPec
+  attr_reader :resultados_suites, :cantidad_exitosos, :cantidad_fallidos, :cantidad_explotados
+
   def initialize(resultados_suites)
     @resultados_suites = resultados_suites
   end
 
-  def imprimir
-    @resultados_suites .map { |resultado| resultado.imprimir }
-    puts ""
-    puts "==============="
-    puts "REPORTE TADSPEC"
-    puts "==============="
-    puts ""
-    puts "\t#{cantidad_exitosos}/#{cantidad} pasaron".green
-    puts "\t#{cantidad_fallidos}/#{cantidad} fallaron".yellow
-    puts "\t#{cantidad_explotados}/#{cantidad} explotaron".red
+  def imprimir(printer = PrinterStdout.new)
+    printer.imprimir_tadspec(self)
   end
 
   def cantidad
