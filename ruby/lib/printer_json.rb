@@ -1,3 +1,5 @@
+require 'json'
+
 class PrinterJson
   def imprimir_tadspec(tadspec)
     puts JSON.pretty_generate({

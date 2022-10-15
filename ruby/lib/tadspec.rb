@@ -6,6 +6,7 @@ require_relative './asertable'
 require_relative './mockeable'
 require_relative './printer_json'
 require_relative './printer_texto'
+require_relative './printer_xml'
 require_relative './spy'
 require_relative './test'
 require_relative './test_suite'
@@ -26,13 +27,27 @@ end
 class TADsPec
   class << self
     def testear(clase = nil, *metodos)
-      suites = clase.nil? ? todas_las_test_suites : [TestSuite.new(clase)]
-
-      resultados = suites.map { |it| it.testear(*metodos) }
-
-      resultado = ResultadoTADsPec.new(resultados)
+      resultado = testear_silenciosamente(clase, *metodos)
       resultado.imprimir(PrinterTexto.new)
       resultado
+    end
+
+    def testear_json(clase = nil, *metodos)
+      resultado = testear_silenciosamente(clase, *metodos)
+      PrinterJson.new.imprimir_tadspec(resultado)
+      resultado
+    end
+
+    def testear_xml(clase = nil, *metodos)
+      resultado = testear_silenciosamente(clase, *metodos)
+      PrinterXml.new.imprimir_tadspec(resultado)
+      resultado
+    end
+
+    def testear_silenciosamente(clase = nil, *metodos)
+      suites = clase.nil? ? todas_las_test_suites : [TestSuite.new(clase)]
+      resultados = suites.map { |it| it.testear(*metodos) }
+      ResultadoTADsPec.new(resultados)
     end
 
     def todas_las_test_suites
