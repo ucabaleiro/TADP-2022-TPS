@@ -1,0 +1,169 @@
+@startuml
+
+'Descripción General del Dominio
+
+class Calabozo {
+    hacerPasarA(grupo)
+}
+
+Calabozo --> Puerta : "entrada"
+
+Habitacion --> "*" Puerta
+
+Puerta --> Habitacion
+
+class Habitacion {
+    hacerPasarA(grupo)
+}
+
+'Los Héroes
+
+class Heroe {
+    fuerza : Number
+    velocidad : Number
+    nivel : Number
+    salud : Number
+    estaVivo()
+    leAgrada(grupo)
+    siguiente(puertas)
+}
+
+Heroe --> Trabajo
+
+'Los Trabajos
+
+interface Trabajo {
+}
+
+'Guerrero
+
+class Guerrero implements Trabajo {
+}
+
+'Ladrón
+
+class Ladron implements Trabajo {
+    habilidad : Number
+}
+
+'Mago
+
+class Mago implements Trabajo {
+}
+
+Mago --> "*" HechizoYNivel
+
+class HechizoYNivel {
+    nivel: Number
+}
+
+HechizoYNivel --> Hechizo
+
+'Los Grupos
+
+class Grupo {
+    siguiente()
+    puntaje()
+}
+
+Grupo --> "*" Heroe
+Grupo --> Cofre
+
+class Cofre {
+    items: Item[]
+}
+
+Cofre --> "*" Item
+
+'El Calabozo
+
+'Puertas
+
+class Puerta {
+}
+
+Puerta --> "*" Obstaculo
+
+interface Obstaculo {
+    puedePasar(grupo)
+    'o grupo.puedePasar(obstaculo) ?
+}
+
+class Cerrada implements Obstaculo
+
+enum Item {
+    Llave
+    Ganzúas
+}
+
+class Escondida implements Obstaculo
+
+class Encantada implements Obstaculo {
+    hechizo: Hechizo
+}
+
+Encantada --> Hechizo
+
+enum Hechizo {
+    Vislumbrar
+}
+
+'Habitaciones
+
+Habitacion --> Situacion
+
+interface Situacion {
+    hacerPasarA(grupo)
+}
+
+class HabitacionVacia implements Situacion
+
+class HabitacionConTesoro implements Situacion {
+    tesoro: Tesoro
+}
+
+class HabitacionConDardos implements Situacion
+
+class HabitacionConLeones implements Situacion
+
+class HabitacionConEncuentro implements Situacion {
+    heroe : Heroe
+}
+
+Heroe --> Personalidad
+
+interface Personalidad {
+    leAgrada(grupo)
+}
+
+class Introvertido implements Personalidad
+
+class Bigote implements Personalidad
+
+class Interesado implements Personalidad
+
+class Loquito implements Personalidad
+
+'Recorriendo el Calabozo
+
+Grupo --> "*" Puerta : conocidas
+Grupo --> "*" Puerta : abiertas
+
+class Puerta {
+    esSalida : boolean
+    hacerPasarA(grupo
+}
+
+Heroe --> Criterio
+
+interface Criterio {
+    siguiente(puertas)
+}
+
+class Heroico implements Criterio
+
+class Ordenado implements Criterio
+
+class Vidente implements Criterio
+
+@enduml
