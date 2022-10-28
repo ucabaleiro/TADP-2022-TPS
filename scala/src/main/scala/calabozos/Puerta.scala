@@ -4,7 +4,7 @@ class Puerta (obstaculos: List[Obstaculo]) {
   def puedeSerAbiertaPor(heroe: Heroe, cofre: List[Item]): Boolean = {
     heroe match {
       case ladron: Ladron if ladron.habilidad >= 20 => true
-      case _ => obstaculos.forall( obstaculo => obstaculo.puedeSerSuperadoPor(heroe, cofre) )
+      case _ => obstaculos.forall(_.puedeSerSuperadoPor(heroe, cofre))
     }
   }
 }
