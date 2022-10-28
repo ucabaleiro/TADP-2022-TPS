@@ -2,3 +2,8 @@ target
 .idea
 project/target
 sbt.json
+.vscode
+.bloop
+.metals
+project/metals.sbt
+project/project/metals.sbt

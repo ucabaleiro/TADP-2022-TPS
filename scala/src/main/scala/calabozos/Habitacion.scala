@@ -1,0 +1,5 @@
+package calabozos
+
+class Habitacion {
+
+}

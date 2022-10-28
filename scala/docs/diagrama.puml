@@ -151,7 +151,7 @@ Grupo --> "*" Puerta : abiertas
 
 class Puerta {
     esSalida : boolean
-    hacerPasarA(grupo
+    hacerPasarA(grupo)
 }
 
 Heroe --> Criterio
