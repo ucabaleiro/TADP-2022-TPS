@@ -1,9 +1,11 @@
 package calabozos
 
-case class Grupo(heroes: List[Heroe], cofre: List[Item]) {
+object Grupo {
+  type Cofre = List[Item]
+}
 
-  def vivos() = heroes.filter(_.estaVivo())
-  def puedeAbrir(puerta: Puerta) = vivos().exists(puerta.puedeSerAbiertaPor(_, cofre))
+case class Grupo(private val heroes: List[Heroe], cofre: Grupo.Cofre) {
+  def heroesVivos = heroes.filter(_.estaVivo)
 }
 
 sealed class Item
