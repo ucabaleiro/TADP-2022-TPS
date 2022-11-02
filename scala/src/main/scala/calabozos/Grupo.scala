@@ -4,7 +4,7 @@ object Grupo {
   type Cofre = List[Item]
 }
 
-case class Grupo(val heroes: List[Heroe], val cofre: Grupo.Cofre, val puertasConocidas: List[Puerta]) {
+case class Grupo(val heroes: List[Heroe], val cofre: Grupo.Cofre, val puertasConocidas: List[Puerta] = List()) {
   def hayVivos = heroes.exists(heroe => heroe.estaVivo)
   def heroesVivos = heroes.filter(_.estaVivo)
   def lider = Option.when(hayVivos)(heroesVivos.head)
