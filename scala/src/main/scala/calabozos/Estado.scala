@@ -3,7 +3,6 @@ package calabozos
 sealed trait Estado {
   val grupo: Grupo
 }
-
 case class Continuan(val grupo: Grupo) extends Estado
 
 object Continuan {

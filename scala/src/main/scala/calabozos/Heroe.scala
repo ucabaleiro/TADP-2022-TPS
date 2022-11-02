@@ -7,17 +7,13 @@ sealed trait Heroe(val fuerza: Int, val velocidad: Int, val nivel: Int, val salu
   def elegirPuerta(puertas: List[Puerta], grupo: Grupo): Puerta = criterio(puertas, grupo)
 }
 
-case class Guerrero(fuerza: Int, velocidad: Int, nivel: Int, salud: Int, criterio: Criterio)
+case class Guerrero(override val fuerza: Int, override val velocidad: Int, override val nivel: Int, override val salud: Int, override val criterio: Criterio)
   extends Heroe(fuerza, velocidad, nivel, salud, criterio) {
     override def perderSalud(cuanto: Int) = copy(salud = salud - cuanto)
     def morir: Heroe = copy(salud = 0)
 }
 
-object Ladron {
-  def unapply(grupo: Grupo) = Option.when(grupo.heroesVivos.exists(_.isInstanceOf[Ladron]))(grupo)
-}
-
-case class Ladron(fuerza: Int, velocidad: Int, nivel: Int, salud: Int, criterio: Criterio, val habilidad: Int)
+case class Ladron(override val fuerza: Int, override val velocidad: Int, override val nivel: Int, override val salud: Int, override val criterio: Criterio, val habilidad: Int)
   extends Heroe(fuerza, velocidad, nivel, salud, criterio) {
   def tieneHabilidad(habilidad: Int) = this.habilidad >= habilidad
   override def perderSalud(cuanto: Int) = copy(salud = salud - cuanto)
@@ -25,7 +21,11 @@ case class Ladron(fuerza: Int, velocidad: Int, nivel: Int, salud: Int, criterio:
 
 }
 
-case class Mago(fuerza: Int, velocidad: Int, nivel: Int, salud: Int, criterio: Criterio, private val aprendizajes: List[Aprendizaje])
+object Ladron {
+  def unapply(grupo: Grupo) = Option.when(grupo.heroesVivos.exists(_.isInstanceOf[Ladron]))(grupo)
+}
+
+case class Mago(override val fuerza: Int, override val velocidad: Int, override val nivel: Int, override val salud: Int, override val criterio: Criterio, private val aprendizajes: List[Aprendizaje])
   extends Heroe(fuerza, velocidad, nivel, salud, criterio) {
   def hechizos: List[Hechizo] = aprendizajes.flatMap(_.hechizoAprendidoPor(this))
   def sabeHechizo(hechizo: Hechizo): Boolean = hechizos.contains(hechizo)
