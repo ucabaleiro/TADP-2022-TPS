@@ -1,5 +1,6 @@
 package calabozos
 
+
 sealed trait Personalidad extends (Grupo => Boolean)
 
 case object Introvertido extends Personalidad {
@@ -7,11 +8,14 @@ case object Introvertido extends Personalidad {
 }
 
 case object Bigote extends Personalidad {
-  override def apply(grupo: Grupo): Boolean = grupo match {
-    _ => ???
-  }
+  override def apply(grupo: Grupo): Boolean = ???
+
+}
+
+case class Interesado(val item: Item) extends Personalidad {
+  override def apply(grupo: Grupo): Boolean = ???
 }
 
 case object Loquito extends Personalidad {
-  override def apply(_: Grupo): Boolean = false
+  override def apply(grupo: Grupo): Boolean = false
 }

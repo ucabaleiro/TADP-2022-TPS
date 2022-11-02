@@ -2,12 +2,13 @@ package calabozos
 
 import calabozos.Grupo.Cofre
 
-class Puerta (obstaculos: List[Obstaculo]) {
-  def puedeSerAbiertaPor(grupo: Grupo) = obstaculos.forall(_.puedeSerSuperadoPor(grupo))
+class Puerta (obstaculos: List[Obstaculo], val habitacion: Habitacion, val esSalida: Boolean)
+  extends (Grupo => Boolean) {
+  def apply(grupo: Grupo) = obstaculos.forall(_(grupo))
 }
 
-trait Obstaculo {
-  def puedeSerSuperadoPor(grupo: Grupo) = grupo.heroesVivos.exists(puedeSerSuperadoPorHeroe(_, grupo.cofre))
+trait Obstaculo extends (Grupo => Boolean) {
+  def apply(grupo: Grupo) = grupo.heroesVivos.exists(puedeSerSuperadoPorHeroe(_, grupo.cofre))
 
   def puedeSerSuperadoPorHeroe(heroe: Heroe, cofre: Cofre) = heroe match {
     case l: Ladron if l.tieneHabilidad(20) => true
