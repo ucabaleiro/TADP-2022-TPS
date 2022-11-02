@@ -6,10 +6,11 @@ class ObstaculoTest extends AnyFreeSpec {
   "Un obstaculo" - {
     "cuando esta cerrado" - {
       "puede ser superado por un ladron con habilidad de mas de 10" in {
-        val ladron = Ladron(1, 1, 1, 1, 11)
+        val ladron = Ladron(1, 1, 1, 1, Ordenado, 11)
         val cofre = List()
+        val grupo = Grupo(List(ladron), cofre, List())
 
-        Cerrada.puedeSerSuperadoPorHeroe(ladron, cofre) shouldBe true
+        Cerrada(ladron, cofre) shouldBe true
       }
 
 
