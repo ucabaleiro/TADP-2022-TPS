@@ -1,7 +1,7 @@
 package calabozos
 
 case class Aprendizaje(hechizo: Hechizo, nivel: Int) {
-  def hechizoAprendidoPor(mago: Mago): Option[Hechizo] = Some(hechizo).filter(_ => mago.nivel >= nivel)
+  def hechizoAprendidoPor(mago: Mago): Option[Hechizo] = Option.when(mago.nivel >= nivel)(hechizo)
 }
 
 sealed trait Hechizo

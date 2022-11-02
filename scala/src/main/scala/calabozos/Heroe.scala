@@ -44,5 +44,5 @@ case object Ordenado extends Criterio {
 }
 
 case object Vidente extends Criterio {
-  def apply(puertas: List[Puerta], grupo: Grupo): Puerta = puertas.maxBy(puerta => puerta.habitacion.apply(grupo).grupo.puntaje)
+  def apply(puertas: List[Puerta], grupo: Grupo): Puerta = puertas.maxBy(puerta => puerta.habitacion(grupo).grupo.puntaje)
 }
