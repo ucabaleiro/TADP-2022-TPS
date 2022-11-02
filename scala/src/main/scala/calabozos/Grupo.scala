@@ -8,7 +8,7 @@ case class Grupo(val heroes: List[Heroe], val cofre: Grupo.Cofre, val puertasCon
   def hayVivos = heroes.exists(heroe => heroe.estaVivo)
   def heroesVivos = heroes.filter(_.estaVivo)
   def lider = Option.when(hayVivos)(heroesVivos.head)
-  def elMasLento = heroesVivos.minBy(_.velocidad)
+  def elMasLento = heroesVivos.minBy(_.stats.velocidad)
 
   def puertasAbribles = puertasConocidas.filter(_(this))
   def puedeAbrirPuerta = puertasConocidas.exists(_(this))

@@ -5,48 +5,49 @@ import calabozos.Grupo.Cofre
 
 class ObstaculoTest extends AnyFreeSpec {
   def grupoCon(heroe: Heroe, cofre: Cofre = List()) = Grupo(List(heroe), cofre)
-  def ladron(habilidad: Int) = Ladron(1, 1, 1, 1, Ordenado, habilidad)
+  def unLadron(habilidad: Int) = heroe(Ladron(habilidad))
+  def unMago(aprendizaje: Aprendizaje) = heroe(Mago(List(aprendizaje)))
+  def unCofreCon(item: Item): Cofre = List(item)
+  def heroe(trabajo: Trabajo) = Heroe(stats, trabajo, Heroico)
+  def stats: Stats = Stats(1,1,1,1)
 
   "Un obstaculo" - {
 
     "cuando esta cerrado" - {
       "puede ser superado por un ladron con habilidad de mas de 10" in {
-        Cerrada(grupoCon(ladron(11))) shouldBe true
+        Cerrada(grupoCon(unLadron(11))) shouldBe true
       }
 
       "puede ser superado por un ladron con una ganzúa" in {
-        Cerrada(grupoCon(ladron(9), List(Ganzua))) shouldBe true
+        Cerrada(grupoCon(unLadron(9), unCofreCon(Ganzua))) shouldBe true
       }
 
       "no puede ser superado por un ladron sin ganzúa ni habilidad mayor a 10" in {
-        Cerrada(grupoCon(ladron(9))) shouldBe false
+        Cerrada(grupoCon(unLadron(9))) shouldBe false
       }
 
       "puede ser superado por cualquier heroe con una llave" in {
-        Cerrada(grupoCon(ladron(9), List(Llave))) shouldBe true
+        Cerrada(grupoCon(unLadron(9), unCofreCon(Llave))) shouldBe true
       }
 
       "no puede ser superado por ningún héroe sin una llave" in {
-        Cerrada(grupoCon(Guerrero(1, 1, 1, 1, Heroico))) shouldBe false
+        Cerrada(grupoCon(heroe(Guerrero))) shouldBe false
       }
 
     }
 
     "cuando esta escondida" - {
       "puede ser superado por un mago que desbloqueo vislumbrar" in {
-        val vislumbrar = Aprendizaje(Vislumbrar, 0)
-        val mago = Mago(10, 10, 10, 10, Heroico, List(vislumbrar))
-        val cofre = List()
+        val mago = unMago(Aprendizaje(Vislumbrar, 0))
 
-        Escondida(grupoCon(mago, cofre)) shouldBe true
+        Escondida(grupoCon(mago)) shouldBe true
       }
 
 
       "no puede ser superado por un mago que no desbloqueo vislumbrar" in {
-        val mago = Mago(10, 10, 10, 10, Heroico, List())
-        val cofre = List()
+        val mago = unMago(Aprendizaje(Vislumbrar, 1000))
 
-        Escondida(grupoCon(mago, cofre)) shouldBe false
+        Escondida(grupoCon(mago)) shouldBe false
       }
 
       "puede ser superado por un ladron nivel 6" in {

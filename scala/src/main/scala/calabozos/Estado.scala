@@ -1,5 +1,7 @@
 package calabozos
 
+
+// TODO: Convertir en monada
 sealed trait Estado {
   val grupo: Grupo
 }
