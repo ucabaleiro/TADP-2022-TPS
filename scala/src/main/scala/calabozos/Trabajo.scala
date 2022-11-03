@@ -1,12 +1,11 @@
 package calabozos
 
-object Trabajo 
 
 sealed trait Trabajo
 
 case class Guerrero() extends Trabajo
 
-object Guerrero extends Trabajo {
+object Guerrero {
   def unapply(heroe: Heroe): Option[Guerrero] = heroe.trabajo match {
     case guerrero: Guerrero => Some(guerrero)
     case _ => None
