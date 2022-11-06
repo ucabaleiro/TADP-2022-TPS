@@ -1,6 +1,7 @@
-import org.scalatest.matchers.should.Matchers._
-import org.scalatest.freespec.{AnyFreeSpec}
-import calabozos.*
+package calabozos
+
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers.*
 
 class PuertaTest extends AnyFreeSpec {
 
@@ -9,7 +10,7 @@ class PuertaTest extends AnyFreeSpec {
     def stats: Stats = Stats(1, 1, 1, 1)
     val ladronHabilidoso = Heroe(stats, Ladron(11), Heroico)
     val ladronNoHabilidoso = Heroe(stats, Ladron(9), Heroico)
-    val guerrero = Heroe(stats, Guerrero, Heroico)
+    val guerrero = Heroe(stats, Guerrero(), Heroico)
 
     val puertaCerrada = Puerta(List(Cerrada), habitacionLoca, false)
 

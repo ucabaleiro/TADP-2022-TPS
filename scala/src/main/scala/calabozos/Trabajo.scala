@@ -1,6 +1,5 @@
 package calabozos
 
-
 sealed trait Trabajo
 
 case class Guerrero() extends Trabajo
@@ -12,8 +11,8 @@ object Guerrero {
   }
 }
 
-case class Ladron(val habilidad: Int) extends Trabajo {
-  def tieneHabilidad(habilidad: Int) = this.habilidad >= habilidad
+case class Ladron(habilidad: Int) extends Trabajo {
+  def tieneHabilidad(habilidad: Int): Boolean = this.habilidad >= habilidad
 }
 
 object Ladron {
@@ -23,8 +22,8 @@ object Ladron {
   }
 }
 
-case class Mago(private val aprendizajes: List[Aprendizaje]) extends Trabajo {
-  def sabeHechizo(heroe: Heroe, hechizo: Hechizo) = aprendizajes.exists(_(heroe, hechizo))
+case class Mago(aprendizajes: List[Aprendizaje]) extends Trabajo {
+  def sabeHechizo(heroe: Heroe, hechizo: Hechizo): Boolean = aprendizajes.exists(_(heroe, hechizo))
 }
 
 object Mago {

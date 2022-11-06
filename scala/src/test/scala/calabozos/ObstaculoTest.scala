@@ -1,14 +1,15 @@
-import org.scalatest.matchers.should.Matchers._
-import org.scalatest.freespec.{AnyFreeSpec}
-import calabozos.*
+package calabozos
+
 import calabozos.Grupo.Cofre
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers.*
 
 class ObstaculoTest extends AnyFreeSpec {
-  def grupoCon(heroe: Heroe, cofre: Cofre = List()) = Grupo(List(heroe), cofre)
-  def unLadron(habilidad: Int) = heroe(Ladron(habilidad))
-  def unMago(aprendizaje: Aprendizaje) = heroe(Mago(List(aprendizaje)))
+  def grupoCon(heroe: Heroe, cofre: Cofre = List()): Grupo = Grupo(List(heroe), cofre)
+  def unLadron(habilidad: Int): Heroe = heroe(Ladron(habilidad))
+  def unMago(aprendizaje: Aprendizaje): Heroe = heroe(Mago(List(aprendizaje)))
   def unCofreCon(item: Item): Cofre = List(item)
-  def heroe(trabajo: Trabajo) = Heroe(stats, trabajo, Heroico)
+  def heroe(trabajo: Trabajo): Heroe = Heroe(stats, trabajo, Heroico)
   def stats: Stats = Stats(1,1,1,1)
 
   "Un obstaculo" - {
@@ -31,7 +32,7 @@ class ObstaculoTest extends AnyFreeSpec {
       }
 
       "no puede ser superado por ningún héroe sin una llave" in {
-        Cerrada(grupoCon(heroe(Guerrero))) shouldBe false
+        Cerrada(grupoCon(heroe(Guerrero()))) shouldBe false
       }
 
     }
