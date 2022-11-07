@@ -1,99 +1,38 @@
 package calabozos
 
+import calabozos.TestFactories._
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers.*
 
 class PuertaTest extends AnyFreeSpec {
 
-  "Una puerta " - {
-    val habitacionLoca = Habitacion(List.empty, NoPasaNada)
-    def stats: Stats = Stats(1, 1, 1, 1)
-    val ladronHabilidoso = Heroe(stats, Ladron(11), Heroico)
-    val ladronNoHabilidoso = Heroe(stats, Ladron(9), Heroico)
-    val guerrero = Heroe(stats, Guerrero(), Heroico)
+  "Una puerta" - {
+    "puede ser abierta si los héroes del grupo pueden atravesar cada uno de sus obstáculos" in {
+      val puerta = puertaConObstaculos(List(Cerrada, Encantada(Vislumbrar)))
 
-    val puertaCerrada = Puerta(List(Cerrada), habitacionLoca, false)
+      val mago = unMago(Aprendizaje(Vislumbrar, 0))
+      val ladron = unLadron(10)
 
-    "cuando esta cerrada" - {
-
-      "puede ser abierta por un grupo con un ladron con habilidad de mas de 10" in {
-        val grupo = Grupo(List(ladronHabilidoso), List(), List())
-        
-        puertaCerrada(grupo) shouldBe true
-      }
-
-      "puede ser abierta por un grupo con un ladron con una ganzúa" in {
-        val grupo = Grupo(List(ladronNoHabilidoso), List(Ganzua), List())
-
-        puertaCerrada(grupo) shouldBe true
-      }
-
-      "no puede ser abierta por un grupo con un ladron sin ganzúa ni habilidad mayor a 10" in {
-        val grupo = Grupo(List(ladronNoHabilidoso), List(), List())
-
-        puertaCerrada(grupo) shouldBe false
-      }
-
-      "puede ser abierta por un grupo con cualquier heroe con una llave" in {
-        val grupo = Grupo(List(guerrero), List(Llave), List())
-
-        puertaCerrada(grupo) shouldBe true
-      }
-
-      "no puede ser abierta por un grupo con ningún héroe sin una llave" in {
-        val grupo = Grupo(List(guerrero), List(), List())
-
-        puertaCerrada(grupo) shouldBe false
-      }
-
+      puerta(grupoCon(List(mago, ladron))) shouldBe true
     }
 
-    "cuando esta escondida" - {
-      val aprendizaje = Aprendizaje(Vislumbrar, 9)
-      val magoRapido = Heroe(Stats(10, 10, 10, 10), Mago(List(aprendizaje)), Heroico)
-      val magoLento = Heroe(Stats(10, 10, 2, 10), Mago(List(aprendizaje)), Heroico)
+    "puede ser abierta si un solo héroe puede atravesar todos los obstáculos, aunque haya otro que no" in {
+      val puerta = puertaConObstaculos(List(Cerrada, Escondida))
 
-      val puerta = new Puerta(List(Escondida), habitacionLoca, false)
+      val ladron = unLadron(10)
+      val guerrero = heroe(Guerrero())
 
-      "puede ser abierta por un grupo con un mago que desbloqueo vislumbrar" in {
-        val grupo = Grupo(List(magoRapido, guerrero), List(), List())
-
-        puerta(grupo) shouldBe true
-      }
-
-      "no puede ser abierta por un grupo con un mago que no desbloqueo vislumbrar" in {
-        val grupo = Grupo(List(magoLento, guerrero), List(), List())
-
-        puerta(grupo) shouldBe false
-      }
-      "puede ser abierta por un ladron con mas de 6 de habilidad" in {
-        val grupo = Grupo(List(ladronHabilidoso, magoLento), List(), List())
-
-        puerta(grupo) shouldBe true
-      }
-      "no puede ser abierta por un ladron con menos de 6 de habilidad" in {
-        val grupo = Grupo(List(ladronNoHabilidoso, magoLento), List(), List())
-
-        puerta(grupo) shouldBe false
-      }
-
-    }
-    "cuando esta encantada" - {
-      val habitacionLoca = Habitacion(List.empty, NoPasaNada)
-
-      val aprendizaje = Aprendizaje(Ibracadabra, 1)
-      val mago = Heroe(Stats(10, 10, 10, 10), Mago(List(aprendizaje)), Heroico)
-
-      val puerta =
-        new Puerta(List(Encantada(Ibracadabra)), habitacionLoca, false)
-
-      "puede ser abierta por un mago que sabe el hechizo" in {
-        val grupo = Grupo(List(mago), List(), List())
-
-        puerta(grupo) shouldBe true
-      }
+      puerta(grupoCon(List(ladron, guerrero))) shouldBe true
     }
 
+    "no puede ser abierta si ninguno de los héroes puede atravesar todos sus obstáculos" in {
+      val puerta = puertaConObstaculos(List(Cerrada, Encantada(Vislumbrar)))
+
+      val mago = unMago(Aprendizaje(Vislumbrar, 0))
+      val guerrero = heroe(Guerrero())
+
+      puerta(grupoCon(List(mago, guerrero))) shouldBe false
+    }
   }
 
 }

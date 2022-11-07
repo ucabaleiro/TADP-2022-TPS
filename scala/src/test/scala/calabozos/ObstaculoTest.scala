@@ -1,19 +1,12 @@
 package calabozos
 
-import calabozos.Grupo.Cofre
+import calabozos.TestFactories._
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers.*
 
 class ObstaculoTest extends AnyFreeSpec {
-  def grupoCon(heroe: Heroe, cofre: Cofre = List()): Grupo = Grupo(List(heroe), cofre)
-  def unLadron(habilidad: Int): Heroe = heroe(Ladron(habilidad))
-  def unMago(aprendizaje: Aprendizaje): Heroe = heroe(Mago(List(aprendizaje)))
-  def unCofreCon(item: Item): Cofre = List(item)
-  def heroe(trabajo: Trabajo): Heroe = Heroe(stats, trabajo, Heroico)
-  def stats: Stats = Stats(1,1,1,1)
 
   "Un obstaculo" - {
-
     "cuando esta cerrado" - {
       "puede ser superado por un ladron con habilidad de mas de 10" in {
         Cerrada(grupoCon(unLadron(11))) shouldBe true
@@ -37,7 +30,7 @@ class ObstaculoTest extends AnyFreeSpec {
 
     }
 
-    "cuando esta escondida" - {
+    "cuando esta escondido" - {
       "puede ser superado por un mago que desbloqueo vislumbrar" in {
         val mago = unMago(Aprendizaje(Vislumbrar, 0))
 
@@ -51,25 +44,38 @@ class ObstaculoTest extends AnyFreeSpec {
         Escondida(grupoCon(mago)) shouldBe false
       }
 
-      "puede ser superado por un ladron nivel 6" in {
+      "puede ser superado por un ladron con habilidad 6" in {
+        val ladron = unLadron(6)
 
+        Escondida(grupoCon(ladron)) shouldBe true
+      }
+
+      "no puede ser superado por un ladron con habilidad menor a 6" in {
+        val ladron = unLadron(5)
+
+        Escondida(grupoCon(ladron)) shouldBe false
+      }
+
+      "no puede ser superado por otro heroe" in {
+        val guerrero = heroe(Guerrero())
+
+        Escondida(grupoCon(guerrero)) shouldBe false
       }
     }
 
   }
+
   "cuando esta hechizado" - {
-      Encantada(Ibracadabra)
-
       "puede ser superado por un mago que conoce el hechizo" in {
-        //val mago = Mago(1, 1, 4, 1, [ HechizoYNivel(Ibracadabra, 4) ])
+        val mago = unMago(Aprendizaje(Ibracadabra, 0))
 
+        Encantada(Ibracadabra)(grupoCon(mago)) shouldBe true
       }
-
 
       "no puede ser superado por un mago que no desbloqueo el hechizo " in {
+        val mago = unMago(Aprendizaje(Ibracadabra, 1000))
 
+        Encantada(Ibracadabra)(grupoCon(mago)) shouldBe false
       }
-
-
     }
 }

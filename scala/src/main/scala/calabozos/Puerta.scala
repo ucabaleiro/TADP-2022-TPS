@@ -28,7 +28,7 @@ object Cerrada extends Obstaculo {
 object Escondida extends Obstaculo {
   override def puedeSerSuperadoPorHeroeSegunObstaculo(heroe: Heroe, cofre: Cofre): Boolean = heroe match {
     case Mago(mago) => mago.sabeHechizo(heroe, Vislumbrar)
-    case Ladron(ladron) => ladron.tieneHabilidad(10)
+    case Ladron(ladron) => ladron.tieneHabilidad(6)
     case _ => false
   }
 }
