@@ -23,7 +23,7 @@ case object TrampaDeLeones extends Situacion {
 case class Encuentro(heroe: Heroe) extends Situacion {
   def apply(grupo: Grupo): Grupo = {
     val grupoConHeroe = grupo.agregarHeroe(heroe)
-    if (grupo.lider.leAgradaGrupo(grupoConHeroe) && heroe.leAgradaGrupo(grupo))
+    if (grupo.lider.map(_.leAgradaGrupo(grupoConHeroe)).getOrElse(false) && heroe.leAgradaGrupo(grupo))
       grupoConHeroe
     else
       grupo.pelearCon(heroe)

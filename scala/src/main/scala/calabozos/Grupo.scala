@@ -15,6 +15,7 @@ case class Grupo(heroes: List[Heroe], cofre: Cofre, puertasConocidas: List[Puert
   def agregarItem(item: Item): Grupo = copy(cofre = cofre ++ List(item))
   def agregarPuerta(puerta: Puerta): Grupo = copy(puertasConocidas = puertasConocidas ++ List(puerta))
   def agregarPuertas(puertasNuevas: List[Puerta]): Grupo = copy(puertasConocidas = puertasConocidas ++ puertasNuevas)
+  def quitarPuerta(puerta: Puerta): Grupo = copy(puertasConocidas = puertasConocidas.filterNot(_ == puerta))
 
   def afectarHeroe(criterio: Grupo => Heroe, afectacion: Heroe => Heroe): Grupo = {
     val heroe = criterio(this)
@@ -34,16 +35,5 @@ case class Grupo(heroes: List[Heroe], cofre: Cofre, puertasConocidas: List[Puert
     - heroes.count(!_.estaVivo) * 5
     + cofre.size
     + heroesVivos.map(_.nivel).max
-
-  def abrirSiguientePuerta(): Estado = {
-    siguientePuerta match
-      case None => return NoHayPuertas(this)
-      case Some(puerta) => return (puerta.habitacion)(this)
-  }
-
-    def hacerCalabozo(habitacion: Habitacion): Estado = {
-      habitacion (this)
-    }
-
 
 }

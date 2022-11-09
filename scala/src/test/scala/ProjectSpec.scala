@@ -12,10 +12,6 @@ class ProjectSpec extends AnyFreeSpec {
 
     "cuando está correctamente configurado" - {
       "debería resolver las dependencias y pasar este test" in {
-        lista.maxByOption(_.puntaje)
-
-
-
         Prueba.materia shouldBe "tadp"
       }
     }

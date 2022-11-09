@@ -11,7 +11,7 @@ object TestFactories {
 
   def unCofreCon(item: Item): Cofre = List(item)
 
-  def heroe(trabajo: Trabajo): Heroe = Heroe(stats, trabajo, Heroico)
+  def heroe(trabajo: Trabajo): Heroe = Heroe(stats, trabajo, Heroico, Loquito)
 
   def stats: Stats = Stats(1, 1, 1, 1)
 
