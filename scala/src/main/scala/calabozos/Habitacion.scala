@@ -10,12 +10,4 @@ class Habitacion(var puertas: List[Puerta], private val situacion: Situacion) ex
       case Continuan(estado) => estado
     }
   }
-
-  // TODO: Esto iría en otro lado
-  // def apply(estado: Estado): Estado = {
-  //   estado match
-  //     case Continuan(grupo) => serRecorridaPor(grupo)
-  //     case _ => estado
-  // }
-
 }

@@ -12,7 +12,8 @@ object Guerrero {
 }
 
 case class Ladron(habilidad: Int) extends Trabajo {
-  def tieneHabilidad(habilidad: Int): Boolean = this.habilidad >= habilidad
+  def tieneHabilidad(heroe: Heroe, habilidad: Int): Boolean =
+    (this.habilidad + heroe.nivel * 3) >= habilidad
 }
 
 object Ladron {
@@ -23,7 +24,8 @@ object Ladron {
 }
 
 case class Mago(aprendizajes: List[Aprendizaje]) extends Trabajo {
-  def sabeHechizo(heroe: Heroe, hechizo: Hechizo): Boolean = aprendizajes.exists(_(heroe, hechizo))
+  def sabeHechizo(heroe: Heroe, hechizo: Hechizo): Boolean =
+    aprendizajes.exists(_(heroe, hechizo))
 }
 
 object Mago {
