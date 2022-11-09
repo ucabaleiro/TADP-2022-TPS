@@ -1,7 +1,5 @@
 package calabozos
 
-import calabozos.Grupo.Cofre
-
 class Puerta (obstaculos: List[Obstaculo], val habitacion: Habitacion, val esSalida: Boolean)
   extends (Grupo => Boolean) {
   def apply(grupo: Grupo): Boolean = obstaculos.forall(_(grupo))

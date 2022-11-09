@@ -1,10 +1,6 @@
 package calabozos
 
-object Grupo {
-  type Cofre = List[Item]
-}
-
-case class Grupo(heroes: List[Heroe], cofre: Grupo.Cofre, puertasConocidas: List[Puerta] = List()) {
+case class Grupo(heroes: List[Heroe], cofre: Cofre, puertasConocidas: List[Puerta] = List()) {
   def hayVivos: Boolean = heroes.exists(heroe => heroe.estaVivo)
   def heroesVivos: List[Heroe] = heroes.filter(_.estaVivo)
   def lider: Option[Heroe] = Option.when(hayVivos)(heroesVivos.head)
@@ -23,9 +19,3 @@ case class Grupo(heroes: List[Heroe], cofre: Grupo.Cofre, puertasConocidas: List
     + cofre.size
     + heroesVivos.map(_.nivel).max
 }
-
-sealed class Item
-
-object Llave extends Item
-
-object Ganzua extends Item

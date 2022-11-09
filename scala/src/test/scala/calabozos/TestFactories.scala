@@ -1,7 +1,5 @@
 package calabozos
 
-import calabozos.Grupo.Cofre
-
 object TestFactories {
   def grupoCon(heroe: Heroe, cofre: Cofre = List()): Grupo = Grupo(List(heroe), cofre)
 

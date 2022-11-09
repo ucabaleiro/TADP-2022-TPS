@@ -32,3 +32,7 @@ object Mago {
     case _ => None
   }
 }
+
+case class Aprendizaje(hechizo: Hechizo, nivel: Int) extends ((Heroe, Hechizo) => Boolean) {
+  def apply(heroe: Heroe, h: Hechizo): Boolean = heroe.nivel >= nivel && h == hechizo
+}
