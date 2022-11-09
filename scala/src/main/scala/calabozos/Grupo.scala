@@ -3,13 +3,13 @@ package calabozos
 case class Grupo(heroes: List[Heroe], cofre: Cofre, puertasConocidas: List[Puerta] = List()) {
   def hayVivos: Boolean = heroes.exists(heroe => heroe.estaVivo)
   def heroesVivos: List[Heroe] = heroes.filter(_.estaVivo)
-  def lider: Heroe = heroesVivos.head
   def elMasLento: Heroe = heroesVivos.minBy(_.stats.velocidad)
   def fuerza: Double = heroesVivos.map(_.stats.fuerza).sum
+  def lider: Option[Heroe] = Option.when(hayVivos)(heroesVivos.head)
 
   def puertasAbribles: List[Puerta] = puertasConocidas.filter(_(this))
   def puedeAbrirPuerta: Boolean = puertasConocidas.exists(_(this))
-  def siguientePuerta: Option[Puerta] = lider.elegirPuerta(puertasAbribles, this)
+  def siguientePuerta: Option[Puerta] = lider.flatMap(_.elegirPuerta(puertasAbribles, this))
 
   def agregarHeroe(heroe: Heroe): Grupo = copy(heroes = heroes ++ List(heroe))
   def agregarItem(item: Item): Grupo = copy(cofre = cofre ++ List(item))
@@ -34,4 +34,16 @@ case class Grupo(heroes: List[Heroe], cofre: Cofre, puertasConocidas: List[Puert
     - heroes.count(!_.estaVivo) * 5
     + cofre.size
     + heroesVivos.map(_.nivel).max
+
+  def abrirSiguientePuerta(): Estado = {
+    siguientePuerta match
+      case None => return NoHayPuertas(this)
+      case Some(puerta) => return (puerta.habitacion)(this)
+  }
+
+    def hacerCalabozo(habitacion: Habitacion): Estado = {
+      habitacion (this)
+    }
+
+
 }
