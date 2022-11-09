@@ -1,21 +1,20 @@
 package calabozos
 
-class Habitacion(var puertas: List[Puerta], private val situacion: Situacion) extends (Grupo => Estado) {
+import scala.util.Try
+import scala.util.Failure
+import scala.util.Success
+import scala.util.Some
 
-  def apply(grupo: Grupo): Estado = {
-    situacion(grupo) match {
-      case TodosMurieron(estado) => estado
-      case NoHayPuertas(estado) => estado
-      case SalieronConExito(estado) => estado
-      case Continuan(estado) => estado
-    }
-  }
+class Habitacion(var puertas: List[Puerta], private val situacion: Situacion) extends (Grupo => Option[Grupo]) {
 
-  // TODO: Esto iría en otro lado
-  // def apply(estado: Estado): Estado = {
-  //   estado match
-  //     case Continuan(grupo) => serRecorridaPor(grupo)
-  //     case _ => estado
-  // }
+  def apply(grupo: Grupo): Option[Grupo] = situacion(grupo).siguientePuerta.flatMap(puerta =>
+    if puerta.esSalida Some(grupo) else puerta.habitacion(grupo)
+  )
 
+
+    //  match {
+    //   case Some(puerta) if puerta.esSalida => Success(grupo)
+    //   case Some(puerta) => puerta.habitacion(grupo)
+    //   case None => Failure(new Exception("bla"))
+    // }
 }

@@ -11,17 +11,21 @@ case class TesoroPerdido(tesoro: Item) extends Situacion {
 }
 
 case object MuchosDardos extends Situacion {
-  def apply(grupo: Grupo): Grupo = grupo.copy(heroes = grupo.heroes.map(_.perderSalud(10)))  
+  def apply(grupo: Grupo): Grupo = grupo.afectarHeroes(_.perderSalud(10))
 }
 
 case object TrampaDeLeones extends Situacion {
   def apply(grupo: Grupo): Grupo = {
-    val elMasLento = grupo.elMasLento
-    val indiceLento = grupo.heroes.indexOf(elMasLento)
-    grupo.copy(heroes = grupo.heroes.updated(indiceLento, elMasLento.morir()))
+    grupo.afectarHeroe(_.elMasLento, _.afectarStats(_.morir()))
   }
 }
 
 case class Encuentro(heroe: Heroe) extends Situacion {
-  def apply(grupo: Grupo): Grupo = ???
+  def apply(grupo: Grupo): Grupo = {
+    val grupoConHeroe = grupo.agregarHeroe(heroe)
+    if (grupo.lider.leAgradaGrupo(grupoConHeroe) && heroe.leAgradaGrupo(grupo))
+      grupoConHeroe
+    else
+      grupo.pelearCon(heroe)
+  }
 }
