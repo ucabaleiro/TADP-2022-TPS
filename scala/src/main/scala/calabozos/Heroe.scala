@@ -1,24 +1,35 @@
 package calabozos
 
-sealed trait Heroe(fuerza: Int, velocidad: Int, nivel: Int, salud: Int) {
-  def estaVivo = salud > 0
-  def perderSalud(cuanto: Int): Heroe
+case class Heroe(statsBase: Stats, trabajo: Trabajo, criterio: Criterio) {
+  def stats: Stats = statsBase(trabajo)
+  def estaVivo: Boolean = stats.salud > 0
+  def perderSalud(cuanto: Int): Heroe = copy(statsBase = stats.perderSalud(cuanto))
+  def morir(): Heroe = copy(statsBase = stats.morir())
+  def elegirPuerta(puertas: List[Puerta], grupo: Grupo): Puerta = criterio(puertas, grupo)
+  def nivel: Int = stats.nivel
 }
 
-case class Guerrero(fuerza: Int, velocidad: Int, nivel: Int, salud: Int)
-  extends Heroe(fuerza, velocidad, nivel, salud) {
-    override def perderSalud(cuanto: Int) = copy(salud = salud - cuanto)
+case class Stats(fuerza: Double, velocidad: Double, nivel: Int, salud: Double) extends (Trabajo => Stats) {
+  def apply(trabajo: Trabajo): Stats = trabajo match {
+    case _: Guerrero => copy(fuerza = fuerza + (fuerza * 0.2 * nivel))
+    case _: Ladron => copy(velocidad = velocidad + (velocidad * 0.2 * nivel))
+    case _: Mago => this
   }
-
-case class Ladron(fuerza: Int, velocidad: Int, nivel: Int, salud: Int, habilidad: Int)
-  extends Heroe(fuerza, velocidad, nivel, salud) {
-  def tieneHabilidad(habilidad: Int) = this.habilidad >= habilidad
-  override def perderSalud(cuanto: Int) = copy(salud = salud - cuanto)
+ 
+  def morir(): Stats = copy(salud = 0)
+  def perderSalud(cuanto: Int): Stats = copy(salud = salud - cuanto)
 }
 
-case class Mago(fuerza: Int, velocidad: Int, nivel: Int, salud: Int, private val aprendizajes: List[Aprendizaje])
-  extends Heroe(fuerza, velocidad, nivel, salud) {
-  def hechizos: List[Hechizo] = aprendizajes.flatMap(_.hechizoAprendidoPor(this))
-  def sabeHechizo(hechizo: Hechizo): Boolean = hechizos.contains(hechizo)
-  override def perderSalud(cuanto: Int) = copy(salud = salud - cuanto)
+sealed trait Criterio extends ((List[Puerta], Grupo) => Puerta)
+
+case object Heroico extends Criterio {
+  def apply(puertas: List[Puerta], grupo: Grupo): Puerta = puertas.last
+}
+
+case object Ordenado extends Criterio {
+  def apply(puertas: List[Puerta], grupo: Grupo): Puerta = puertas.head
+}
+
+case object Vidente extends Criterio {
+  def apply(puertas: List[Puerta], grupo: Grupo): Puerta = puertas.maxBy(puerta => puerta.habitacion(grupo).grupo.puntaje)
 }

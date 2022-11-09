@@ -1,23 +1,21 @@
 package calabozos
 
-sealed trait Habitacion extends (Grupo => Grupo)
+class Habitacion(var puertas: List[Puerta], private val situacion: Situacion) extends (Grupo => Estado) {
 
-case object NoPasaNada extends Habitacion {
-  def apply(grupo: Grupo): Grupo = grupo
-}
+  def apply(grupo: Grupo): Estado = {
+    situacion(grupo) match {
+      case TodosMurieron(estado) => estado
+      case NoHayPuertas(estado) => estado
+      case SalieronConExito(estado) => estado
+      case Continuan(estado) => estado
+    }
+  }
 
-case class TesoroPerdido(tesoro: Item) extends Habitacion {
-  def apply(grupo: Grupo): Grupo = grupo.agregarItem(tesoro)
-}
+  // TODO: Esto iría en otro lado
+  // def apply(estado: Estado): Estado = {
+  //   estado match
+  //     case Continuan(grupo) => serRecorridaPor(grupo)
+  //     case _ => estado
+  // }
 
-case object MuchosDardos extends Habitacion {
-  def apply(grupo: Grupo): Grupo = grupo.copy(heroes = grupo.heroes.map(_.perderSalud(10)))  
-}
-
-case object TrampaDeLeones extends Habitacion {
-  def apply(grupo: Grupo): Grupo = ???
-}
-
-case class Encuentro(heroe: Heroe) extends Habitacion {
-  def apply(grupo: Grupo): Grupo = ???
 }

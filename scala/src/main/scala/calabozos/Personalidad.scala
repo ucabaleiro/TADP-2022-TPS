@@ -7,11 +7,16 @@ case object Introvertido extends Personalidad {
 }
 
 case object Bigote extends Personalidad {
-  override def apply(grupo: Grupo): Boolean = grupo match {
-    _ => ???
+  override def apply(grupo: Grupo): Boolean = grupo.heroes.exists {
+    case Ladron(_) => true
+    case _ => false
   }
 }
 
+case class Interesado(item: Item) extends Personalidad {
+  override def apply(grupo: Grupo): Boolean = grupo.cofre.contains(item)
+}
+
 case object Loquito extends Personalidad {
-  override def apply(_: Grupo): Boolean = false
+  override def apply(grupo: Grupo): Boolean = false
 }
