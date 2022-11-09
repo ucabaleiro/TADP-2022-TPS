@@ -1,5 +1,0 @@
-package calabozos
-
-class Calabozo {
-
-}

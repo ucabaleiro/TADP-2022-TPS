@@ -18,7 +18,7 @@ case object TrampaDeLeones extends Situacion {
   def apply(grupo: Grupo): Grupo = {
     val elMasLento = grupo.elMasLento
     val indiceLento = grupo.heroes.indexOf(elMasLento)
-    return grupo.copy(heroes = grupo.heroes.updated(indiceLento, elMasLento.morir))
+    grupo.copy(heroes = grupo.heroes.updated(indiceLento, elMasLento.morir()))
   }
 }
 
