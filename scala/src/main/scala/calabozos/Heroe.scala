@@ -1,5 +1,6 @@
 package calabozos
 
+// TODO: Refactorizar la relación del Héroe con el Trabajo (https://www.youtube.com/watch?v=P-3IGjZiPm0)
 case class Heroe(statsBase: Stats, trabajo: Trabajo, criterio: Criterio, personalidad: Personalidad) {
   def stats: Stats = statsBase(trabajo)
   def estaVivo: Boolean = statsBase(trabajo).salud > 0
