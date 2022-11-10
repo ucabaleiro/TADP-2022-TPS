@@ -16,14 +16,14 @@ case object MuchosDardos extends Situacion {
 
 case object TrampaDeLeones extends Situacion {
   def apply(grupo: Grupo): Grupo = {
-    grupo.afectarHeroe(_.elMasLento, _.afectarStats(_.morir()))
+    grupo.afectarHeroe(_.minBy(_.stats.velocidad), _.afectarStats(_.morir()))
   }
 }
 
 case class Encuentro(heroe: Heroe) extends Situacion {
   def apply(grupo: Grupo): Grupo = {
     val grupoConHeroe = grupo.agregarHeroe(heroe)
-    if (grupo.lider.map(_.leAgradaGrupo(grupoConHeroe)).getOrElse(false) && heroe.leAgradaGrupo(grupo))
+    if (grupo.lider.exists(_.leAgradaGrupo(grupoConHeroe)) && heroe.leAgradaGrupo(grupo))
       grupoConHeroe
     else
       grupo.pelearCon(heroe)

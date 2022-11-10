@@ -1,14 +1,12 @@
 package calabozos
 
 case class Grupo(heroes: List[Heroe], cofre: Cofre, puertasConocidas: List[Puerta] = List()) {
-  def hayVivos: Boolean = heroes.exists(heroe => heroe.estaVivo)
+  def hayVivos: Boolean = heroes.exists(_.estaVivo)
   def heroesVivos: List[Heroe] = heroes.filter(_.estaVivo)
-  def elMasLento: Heroe = heroesVivos.minBy(_.stats.velocidad)
   def fuerza: Double = heroesVivos.map(_.stats.fuerza).sum
   def lider: Option[Heroe] = Option.when(hayVivos)(heroesVivos.head)
 
   def puertasAbribles: List[Puerta] = puertasConocidas.filter(_(this))
-  def puedeAbrirPuerta: Boolean = puertasConocidas.exists(_(this))
   def siguientePuerta: Option[Puerta] = lider.flatMap(_.elegirPuerta(puertasAbribles, this))
 
   def agregarHeroe(heroe: Heroe): Grupo = copy(heroes = heroes ++ List(heroe))
@@ -17,12 +15,11 @@ case class Grupo(heroes: List[Heroe], cofre: Cofre, puertasConocidas: List[Puert
   def agregarPuertas(puertasNuevas: List[Puerta]): Grupo = copy(puertasConocidas = puertasConocidas ++ puertasNuevas)
   def quitarPuerta(puerta: Puerta): Grupo = copy(puertasConocidas = puertasConocidas.filterNot(_ == puerta))
 
-  def afectarHeroe(criterio: Grupo => Heroe, afectacion: Heroe => Heroe): Grupo = {
-    val heroe = criterio(this)
-    val indice = heroes.indexOf(heroe)
-    val nuevosHeroes = heroes.updated(indice, afectacion(heroe))
+  def afectarHeroe(criterio: List[Heroe] => Heroe, afectacion: Heroe => Heroe): Grupo = Option.when(hayVivos) {
+    val heroe = criterio(heroesVivos)
+    val nuevosHeroes = heroes.updated(heroes.indexOf(heroe), afectacion(heroe))
     copy(heroes = nuevosHeroes)
-  }
+  }.getOrElse(this)
 
   def afectarHeroes(afectacion: Stats => Stats): Grupo =
     copy(heroes = heroes.map(heroe => if (heroe.estaVivo) heroe.afectarStats(afectacion) else heroe))

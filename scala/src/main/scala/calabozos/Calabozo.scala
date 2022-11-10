@@ -1,8 +1,13 @@
 package calabozos
 
-case class Calabozo(val entrada: Habitacion) {
+import scala.annotation.tailrec
 
-  def entrarACalabozo(grupo: Grupo): Option[Grupo] = entrada(grupo)
+case class Calabozo(entrada: Puerta) {
+
+  def entrarACalabozo(grupo: Grupo): Option[Grupo] = grupo
+    .agregarPuerta(entrada)
+    .siguientePuerta
+    .flatMap(_.habitacion(grupo))
 
   def mejorGrupo(grupos: List[Grupo]): Option[Grupo] = grupos
     .flatMap(entrarACalabozo)
@@ -10,8 +15,9 @@ case class Calabozo(val entrada: Habitacion) {
 
   def nivelesParaGrupo(grupo: Grupo): Option[Int] = nivelesParaGrupo(grupo, 0)
 
+  @tailrec
   private def nivelesParaGrupo(grupo: Grupo, niveles: Int): Option[Int] = entrarACalabozo(grupo) match {
-    case Some(grupo) => Some(niveles)
+    case Some(_) => Some(niveles)
     case None if niveles <= 20 => nivelesParaGrupo(grupo.afectarHeroes(_.subirNivel), niveles + 1)
     case _ => None
   }
