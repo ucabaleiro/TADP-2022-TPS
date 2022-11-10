@@ -15,5 +15,5 @@ object TestFactories {
 
   def stats: Stats = Stats(1, 1, 1, 1)
 
-  def puertaConObstaculos(obstaculos: List[Obstaculo] = List()): Puerta = Puerta(obstaculos, Habitacion(List(), NoPasaNada), false)
+  def puertaConObstaculos(obstaculos: List[Obstaculo] = List()): Puerta = Puerta(obstaculos, Habitacion(List(), NoPasaNada))
 }
