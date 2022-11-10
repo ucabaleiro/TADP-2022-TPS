@@ -6,6 +6,7 @@ import org.scalatest.matchers.should.Matchers.*
 
 class ObstaculoTest extends AnyFreeSpec {
 
+
   "Un obstaculo" - {
     "cuando esta cerrado" - {
       "puede ser superado por un ladron con habilidad de mas de 10" in {
@@ -76,6 +77,10 @@ class ObstaculoTest extends AnyFreeSpec {
         val mago = unMago(Aprendizaje(Ibracadabra, 1000))
 
         Encantada(Ibracadabra)(grupoCon(mago)) shouldBe false
+      }
+
+      "no lo puede superar un no mago" in {
+        Encantada(Ibracadabra)(grupoCon(heroe(Guerrero()))) shouldBe false
       }
     }
 }

@@ -1,0 +1,31 @@
+@startuml
+
+class Heroe {
+  nivel: Int
+  salud: Int
+  fuerza(): Int
+  velocidad() : Int
+}
+
+Heroe --> Trabajo
+
+interface Trabajo {
+  fuerzaBase: Int
+  velocidadBase: Int
+  fuerza(nivel): Int
+  velocidad(nivel): Int
+}
+
+class Guerrero extends Trabajo {
+  fuerza(nivel): Int
+}
+
+class Ladron extends Trabajo {
+  tieneHabilidad(nivel, habilidad): Boolean
+}
+
+class Mago extends Trabajo {
+  sabeHechizo(nivel, hechizo): Boolean
+}
+
+@enduml

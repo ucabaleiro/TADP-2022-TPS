@@ -1,20 +1,19 @@
-// package calabozos
+package calabozos
 
-// import org.scalatest.freespec.AnyFreeSpec
-// import org.scalatest.matchers.should.Matchers.*
+import calabozos.TestFactories._
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers.*
 
-// class GrupoTest extends AnyFreeSpec {
-//   "Un grupo" - {
-//       "tiene puntaje" in {
-//         val grupo = Grupo(
-//           List(
-//             Heroe(Stats(1,1,3,1), Guerrero(), Heroico),
-//             Heroe(Stats(1,1,1,0), Guerrero(), Heroico)
-//           ),
-//           List(Llave, Ganzua, Llave, Llave),
-//           List()
-//         )
-//         grupo.puntaje shouldBe 12
-//       }
-//     }
-//   }
+class GrupoTest extends AnyFreeSpec {
+ "Un grupo" - {
+     "tiene puntaje" in {
+       val heroeMuerto = Heroe(Stats(0,0,0,0), Guerrero(), Heroico, Loquito)
+
+       grupoCon(List(unLadron(3), heroeBuffeado(Guerrero())))
+         .agregarItem(Ganzua)
+         .agregarItem(Llave)
+         .agregarHeroe(heroeMuerto)
+         .puntaje shouldBe 37
+     }
+   }
+}

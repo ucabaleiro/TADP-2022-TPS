@@ -1,0 +1,34 @@
+@startuml
+
+class Heroe {
+  nivel: Int
+  salud: Int
+  fuerzaBase: Int
+  velocidadBase: Int
+  fuerza(): Int
+  velocidad() : Int
+}
+
+Heroe --> Trabajo
+
+note right of Heroe::fuerza()
+  def fuerza(trabajo: Trabajo): Int = trabajo match {
+    case _: Guerrero => fuerzaBase + (fuerzaBase * 0.2 * nivel)
+    case _ => fuerzaBase
+  }
+end note
+
+interface Trabajo
+
+class Guerrero extends Trabajo {
+}
+
+class Ladron extends Trabajo {
+  tieneHabilidad(nivel, habilidad): Boolean
+}
+
+class Mago extends Trabajo {
+  sabeHechizo(nivel, hechizo): Boolean
+}
+
+@enduml

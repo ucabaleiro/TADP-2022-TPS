@@ -1,0 +1,24 @@
+@startuml
+
+abstract class Heroe {
+  nivel: Int
+  salud: Int
+  fuerzaBase: Int
+  velocidadBase: Int
+  fuerza(): Int
+  velocidad() : Int
+}
+
+class Guerrero extends Heroe {
+  fuerza(): Int
+}
+
+class Ladron extends Heroe {
+  tieneHabilidad(habilidad): Boolean
+}
+
+class Mago extends Heroe {
+  sabeHechizo(hechizo): Boolean
+}
+
+@enduml

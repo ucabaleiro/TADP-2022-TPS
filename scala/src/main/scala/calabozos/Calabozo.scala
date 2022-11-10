@@ -6,8 +6,7 @@ case class Calabozo(entrada: Puerta) {
 
   def entrarACalabozo(grupo: Grupo): Option[Grupo] = grupo
     .agregarPuerta(entrada)
-    .siguientePuerta
-    .flatMap(_.ubicacion(grupo))
+    .abrirSiguientePuerta()
 
   def mejorGrupo(grupos: List[Grupo]): Option[Grupo] = grupos
     .flatMap(entrarACalabozo)

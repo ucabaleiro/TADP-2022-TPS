@@ -6,14 +6,16 @@ case class Grupo(heroes: List[Heroe], cofre: Cofre, puertasConocidas: List[Puert
   def fuerza: Double = heroesVivos.map(_.stats.fuerza).sum
   def lider: Option[Heroe] = Option.when(hayVivos)(heroesVivos.head)
 
-  def puertasAbribles: List[Puerta] = puertasConocidas.filter(_(this))
-  def siguientePuerta: Option[Puerta] = lider.flatMap(_.elegirPuerta(puertasAbribles, this))
+  private def puertasAbribles: List[Puerta] = puertasConocidas.filter(_(this))
+  private def siguientePuerta: Option[Puerta] = lider.flatMap(_.elegirPuerta(puertasAbribles, this))
+
+  def abrirSiguientePuerta(): Option[Grupo] = siguientePuerta.flatMap(puerta => puerta.ubicacion(quitarPuerta(puerta)))
 
   def agregarHeroe(heroe: Heroe): Grupo = copy(heroes = heroes ++ List(heroe))
   def agregarItem(item: Item): Grupo = copy(cofre = cofre ++ List(item))
   def agregarPuerta(puerta: Puerta): Grupo = copy(puertasConocidas = puertasConocidas ++ List(puerta))
   def agregarPuertas(puertasNuevas: List[Puerta]): Grupo = copy(puertasConocidas = puertasConocidas ++ puertasNuevas)
-  def quitarPuerta(puerta: Puerta): Grupo = copy(puertasConocidas = puertasConocidas.filterNot(_ == puerta))
+  private def quitarPuerta(puerta: Puerta): Grupo = copy(puertasConocidas = puertasConocidas.filterNot(_ == puerta))
 
   def afectarHeroe(criterio: List[Heroe] => Heroe, afectacion: Heroe => Heroe): Grupo = Option.when(hayVivos) {
     val heroe = criterio(heroesVivos)

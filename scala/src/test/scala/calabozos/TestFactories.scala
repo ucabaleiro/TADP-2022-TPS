@@ -13,7 +13,13 @@ object TestFactories {
 
   def heroe(trabajo: Trabajo): Heroe = Heroe(stats, trabajo, Heroico, Loquito)
 
-  def stats: Stats = Stats(1, 1, 1, 1)
+  def stats: Stats = Stats(1, 1, 0, 1)
+
+  def heroeBuffeado(trabajo: Trabajo): Heroe = Heroe(statsBuff, trabajo, Heroico, Loquito)
+
+  def statsBuff: Stats = Stats(20,20,20,20)
 
   def puertaConObstaculos(obstaculos: List[Obstaculo] = List()): Puerta = Puerta(obstaculos, Habitacion(List(), NoPasaNada))
+
+
 }

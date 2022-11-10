@@ -1,0 +1,42 @@
+@startuml
+
+class Heroe {
+  statsBase
+  stats(): Stats
+}
+
+note left of Heroe::stats()
+  statsBase(trabajo)
+end note
+
+Heroe -right-> Stats
+Heroe --> Trabajo
+
+class Stats {
+  nivel: Int
+  salud: Int
+  fuerza: Int
+  velocidad: Int
+  apply(trabajo): Stats
+}
+
+note right of Stats::apply
+  def apply(trabajo: Trabajo): Stats = trabajo match {
+    case _: Guerrero => copy(fuerza = fuerza + (fuerza * 0.2 * nivel))
+    case _ => this
+  }
+end note
+
+Trabajo ..> Heroe
+
+interface Trabajo
+
+class Ladron extends Trabajo {
+  tieneHabilidad(heroe, habilidad): Boolean
+}
+
+class Mago extends Trabajo {
+  sabeHechizo(heroe, hechizo): Boolean
+}
+
+@enduml

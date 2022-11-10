@@ -13,7 +13,6 @@ case object Ordenado extends Criterio {
 }
 
 case object Vidente extends Criterio {
-  def apply(puertas: List[Puerta], grupo: Grupo): Option[Puerta] = 
-    Option.when(puertas.nonEmpty)(puertas)
-      .flatMap(_.maxByOption(_.ubicacion(grupo).map(_.puntaje)))
+  def apply(puertas: List[Puerta], grupo: Grupo): Option[Puerta] =
+    Option.when(puertas.nonEmpty)(puertas).flatMap(_.maxByOption(_.ubicacion.pasar(grupo).puntaje))
 }
