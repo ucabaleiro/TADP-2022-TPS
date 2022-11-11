@@ -5,21 +5,17 @@ object TestFactories {
 
   def grupoCon(heroes: List[Heroe]): Grupo = Grupo(heroes, List())
 
-  def unLadron(habilidad: Int): Heroe = heroe(Ladron(habilidad))
+  def unLadron(habilidad: Int): Heroe = heroe(Ladron(fuerzaBase = 1, velocidadBase = 1, habilidad))
 
-  def unMago(aprendizaje: Aprendizaje, nivel: Int = 0): Heroe = heroe(Mago(List(aprendizaje)), nivel)
+  def unMago(aprendizaje: Aprendizaje, nivel: Int = 0): Heroe = heroe(Mago(fuerzaBase = 1, velocidadBase = 1, List(aprendizaje)), nivel)
 
-  def unGuerrero(fuerza: Double, salud: Int): Heroe = Heroe(Stats(fuerza, 1, 0, salud), Guerrero(), Heroico, Loquito)
+  def unGuerrero(fuerza: Double = 1, salud: Int = 1): Heroe = Heroe(salud, nivel = 0, Guerrero(fuerza, 1), criterio = Heroico, personalidad = Loquito)
 
   def unCofreCon(item: Item): Cofre = List(item)
 
-  def heroe(trabajo: Trabajo, nivel: Int = 0): Heroe = Heroe(stats(nivel), trabajo, Heroico, Loquito)
+  def heroe(trabajo: Trabajo = Guerrero(1, 1), nivel: Int = 0, personalidad: Personalidad = Loquito): Heroe = Heroe(salud = 1, nivel, trabajo, criterio = Heroico, personalidad)
 
-  def stats(nivel: Int = 0): Stats = Stats(1, 1, nivel, 1)
-
-  def heroeBuffeado(trabajo: Trabajo): Heroe = Heroe(statsBuff, trabajo, Heroico, Loquito)
-
-  def statsBuff: Stats = Stats(20,20,20,20)
+  def heroeBuffeado(trabajo: Trabajo): Heroe = Heroe(salud = 20, nivel = 20, trabajo, Heroico, Loquito)
 
   def puertaConObstaculos(obstaculos: List[Obstaculo] = List()): Puerta = Puerta(obstaculos, Habitacion(List(), NoPasaNada))
 
@@ -27,5 +23,5 @@ object TestFactories {
 
   def puertaCon(habitacion: Habitacion): Puerta = Puerta(List(), habitacion)
 
-  def habitacionConSalida(): Habitacion = Habitacion(List(puertaDeSalida()), NoPasaNada)
+  def habitacionConSalida(situacion: Situacion = NoPasaNada): Habitacion = Habitacion(List(puertaDeSalida()), situacion)
 }

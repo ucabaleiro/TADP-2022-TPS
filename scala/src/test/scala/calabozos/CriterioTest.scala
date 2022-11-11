@@ -6,7 +6,7 @@ import org.scalatest.matchers.should.Matchers.*
 
 class CriterioTest extends AnyFreeSpec {
 
-  def heroeConCriterio(criterio: Criterio): Heroe = Heroe(stats(), Guerrero(), criterio, Introvertido);
+  def heroeConCriterio(criterio: Criterio): Heroe = Heroe(nivel = 1, salud = 1, Guerrero(fuerzaBase = 1, velocidadBase = 1), criterio, personalidad = Introvertido);
   def habitacionDondeNoPasaNada: Habitacion = Habitacion(List.empty, NoPasaNada)
   val grupo = grupoCon(List(heroeConCriterio(Heroico), heroeConCriterio(Heroico)))
   val puertas = List(Puerta(List.empty, habitacionDondeNoPasaNada), Puerta(List.empty, habitacionDondeNoPasaNada))

@@ -26,7 +26,7 @@ class ObstaculoTest extends AnyFreeSpec {
       }
 
       "no puede ser superado por ningún héroe sin una llave" in {
-        Cerrada(grupoCon(heroe(Guerrero()))) shouldBe false
+        Cerrada(grupoCon(unGuerrero())) shouldBe false
       }
 
     }
@@ -58,9 +58,7 @@ class ObstaculoTest extends AnyFreeSpec {
       }
 
       "no puede ser superado por otro heroe" in {
-        val guerrero = heroe(Guerrero())
-
-        Escondida(grupoCon(guerrero)) shouldBe false
+        Escondida(grupoCon(unGuerrero())) shouldBe false
       }
     }
 
@@ -80,7 +78,7 @@ class ObstaculoTest extends AnyFreeSpec {
       }
 
       "no lo puede superar un no mago" in {
-        Encantada(Ibracadabra)(grupoCon(heroe(Guerrero()))) shouldBe false
+        Encantada(Ibracadabra)(grupoCon(unGuerrero())) shouldBe false
       }
     }
 }

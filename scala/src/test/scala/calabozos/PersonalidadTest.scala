@@ -20,10 +20,10 @@ class PersonalidadTest extends AnyFreeSpec {
 
       "a los bigotes" - {
         val ladron = unLadron(5)
-        val guerrero = heroe(Guerrero())
+        val guerrero = heroe(personalidad = Bigote)
 
         "les cae bien un grupo donde no hay ladrones" in {
-          Bigote(grupoCon(List(guerrero))) shouldBe true
+          Bigote(grupoCon(List(unGuerrero()))) shouldBe true
         }
 
         "no les cae bien un grupo donde hay ladrones" in {

@@ -1,8 +1,13 @@
 package calabozos
 
-sealed trait Trabajo
+sealed trait Trabajo(fuerzaBase: Double, velocidadBase: Double) {
+  def fuerza(nivel: Int): Double = fuerzaBase
+  def velocidad(nivel: Int): Double = velocidadBase
+}
 
-case class Guerrero() extends Trabajo
+case class Guerrero(fuerzaBase: Double, velocidadBase: Double) extends Trabajo(fuerzaBase, velocidadBase) {
+  override def fuerza(nivel: Int): Double = fuerzaBase + fuerzaBase * nivel * 0.2
+}
 
 object Guerrero {
   def unapply(heroe: Heroe): Option[Guerrero] = heroe.trabajo match {
@@ -11,9 +16,8 @@ object Guerrero {
   }
 }
 
-case class Ladron(habilidad: Int) extends Trabajo {
-  def tieneHabilidad(heroe: Heroe, habilidad: Int): Boolean =
-    (this.habilidad + heroe.nivel * 3) >= habilidad
+case class Ladron(fuerzaBase: Double, velocidadBase: Double, habilidad: Int) extends Trabajo(fuerzaBase, velocidadBase) {
+  def tieneHabilidad(nivel: Int, unaHabilidad: Int): Boolean = (habilidad + nivel * 3) >= unaHabilidad
 }
 
 object Ladron {
@@ -23,9 +27,8 @@ object Ladron {
   }
 }
 
-case class Mago(aprendizajes: List[Aprendizaje]) extends Trabajo {
-  def sabeHechizo(heroe: Heroe, hechizo: Hechizo): Boolean =
-    aprendizajes.exists(_(heroe, hechizo))
+case class Mago(fuerzaBase: Double, velocidadBase: Double, aprendizajes: List[Aprendizaje]) extends Trabajo(fuerzaBase, velocidadBase) {
+  def sabeHechizo(nivel: Int, hechizo: Hechizo): Boolean = aprendizajes.exists(_(nivel, hechizo))
 }
 
 object Mago {
@@ -35,6 +38,6 @@ object Mago {
   }
 }
 
-case class Aprendizaje(hechizo: Hechizo, nivel: Int) extends ((Heroe, Hechizo) => Boolean) {
-  def apply(heroe: Heroe, h: Hechizo): Boolean = heroe.nivel >= nivel && h == hechizo
+case class Aprendizaje(hechizo: Hechizo, nivel: Int) extends ((Int, Hechizo) => Boolean) {
+  def apply(n: Int, h: Hechizo): Boolean = n >= nivel && h == hechizo
 }

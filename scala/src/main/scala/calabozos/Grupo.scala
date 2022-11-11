@@ -3,7 +3,7 @@ package calabozos
 case class Grupo(heroes: List[Heroe], cofre: Cofre, puertasConocidas: List[Puerta] = List()) {
   def hayVivos: Boolean = heroes.exists(_.estaVivo)
   def heroesVivos: List[Heroe] = heroes.filter(_.estaVivo)
-  def fuerza: Double = heroesVivos.map(_.stats.fuerza).sum
+  def fuerza: Double = heroesVivos.map(_.fuerza).sum
   def lider: Option[Heroe] = Option.when(hayVivos)(heroesVivos.head)
 
   private def puertasAbribles: List[Puerta] = puertasConocidas.filter(_(this))
@@ -19,16 +19,15 @@ case class Grupo(heroes: List[Heroe], cofre: Cofre, puertasConocidas: List[Puert
 
   def afectarHeroe(criterio: List[Heroe] => Heroe, afectacion: Heroe => Heroe): Grupo = Option.when(hayVivos) {
     val heroe = criterio(heroesVivos)
-    val nuevosHeroes = heroes.updated(heroes.indexOf(heroe), afectacion(heroe))
-    copy(heroes = nuevosHeroes)
+    copy(heroes = heroes.updated(heroes.indexOf(heroe), afectacion(heroe)))
   }.getOrElse(this)
 
-  def afectarHeroes(afectacion: Stats => Stats): Grupo =
-    copy(heroes = heroes.map(heroe => if (heroe.estaVivo) heroe.afectarStats(afectacion) else heroe))
+  def afectarHeroes(afectacion: Heroe => Heroe): Grupo =
+    copy(heroes = heroes.map(heroe => if (heroe.estaVivo) afectacion(heroe) else heroe))
 
   def pelearCon(heroe: Heroe): Grupo =
-    if (fuerza > heroe.stats.fuerza) afectarHeroes(_.subirNivel)
-    else afectarHeroes(_.perderSalud(heroe.stats.fuerza / heroesVivos.size))
+    if (fuerza > heroe.fuerza) afectarHeroes(_.subirNivel())
+    else afectarHeroes(_.perderSalud(heroe.fuerza / heroesVivos.size))
 
   def puntaje: Int = heroesVivos.size * 10
     - heroes.count(!_.estaVivo) * 5

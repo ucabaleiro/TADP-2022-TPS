@@ -17,7 +17,7 @@ case class Calabozo(entrada: Puerta) {
   @tailrec
   private def nivelesParaGrupo(grupo: Grupo, niveles: Int): Option[Int] = hacerEntrar(grupo) match {
     case Some(_) => Some(niveles)
-    case None if niveles < 20 => nivelesParaGrupo(grupo.afectarHeroes(_.subirNivel), niveles + 1)
+    case None if niveles < 20 => nivelesParaGrupo(grupo.afectarHeroes(_.subirNivel()), niveles + 1)
     case _ => None
   }
 }

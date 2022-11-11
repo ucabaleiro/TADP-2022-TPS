@@ -20,7 +20,7 @@ class PuertaTest extends AnyFreeSpec {
       val puerta = puertaConObstaculos(List(Cerrada, Escondida))
 
       val ladron = unLadron(10)
-      val guerrero = heroe(Guerrero())
+      val guerrero = unGuerrero()
 
       puerta(grupoCon(List(ladron, guerrero))) shouldBe true
     }
@@ -29,7 +29,7 @@ class PuertaTest extends AnyFreeSpec {
       val puerta = puertaConObstaculos(List(Cerrada, Encantada(Vislumbrar)))
 
       val mago = unMago(Aprendizaje(Vislumbrar, 0))
-      val guerrero = heroe(Guerrero())
+      val guerrero = unGuerrero()
 
       puerta(grupoCon(List(mago, guerrero))) shouldBe false
     }

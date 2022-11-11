@@ -16,7 +16,7 @@ case object MuchosDardos extends Situacion {
 
 case object TrampaDeLeones extends Situacion {
   def apply(grupo: Grupo): Grupo = {
-    grupo.afectarHeroe(_.minBy(_.stats.velocidad), _.afectarStats(_.morir()))
+    grupo.afectarHeroe(_.minBy(_.velocidad), _.morir())
   }
 }
 

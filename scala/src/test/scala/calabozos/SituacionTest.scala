@@ -15,35 +15,41 @@ class SituacionTest extends AnyFreeSpec {
     }
 
     "muchos dardos hace que todo el grupo pierda 10 de salud" in {
-        MuchosDardos(grupoCon(heroeBuffeado(Ladron(5)))).heroesVivos shouldBe List(heroeBuffeado(Ladron(5)).afectarStats(_.perderSalud(10)))
+      val ladron = heroeBuffeado(Ladron(fuerzaBase = 20, velocidadBase = 20, habilidad = 5))
+
+      MuchosDardos(grupoCon(ladron)).heroesVivos shouldBe List(ladron.perderSalud(10))
     }
 
     "trampa de leones mata al mas lento" in {
-        TrampaDeLeones(grupoCon(List(unLadron(5),heroeBuffeado(Ladron(5))))).heroesVivos shouldBe List(heroeBuffeado(Ladron(5)))
+      val ladron = unLadron(5)
+      val ladronBuffeado = heroeBuffeado(Ladron(velocidadBase = 2, fuerzaBase = 1, habilidad = 5))
+
+      TrampaDeLeones(grupoCon(List(ladron, ladronBuffeado))).heroesVivos shouldBe List(ladronBuffeado)
     }
 
     "encuentro " - {
-        val mago = Heroe(stats(), Mago(List(Aprendizaje(Vislumbrar, 0))), Heroico, Bigote)
+        val mago = Heroe(salud = 1, nivel = 1, Mago(fuerzaBase = 1, velocidadBase = 1, List(Aprendizaje(Vislumbrar, 0))), Heroico, Bigote)
 
         "cuando se agradan el heroe encontrado se suma al grupo" in {
           val grupo = grupoCon(mago)
-          val guerrero = Heroe(stats(), Guerrero(), Heroico, Bigote)
+          val bigote = heroe(personalidad = Bigote)
 
-          Encuentro(guerrero)(grupo).heroesVivos shouldBe grupoCon(List(mago,guerrero)).heroesVivos
+          Encuentro(bigote)(grupo).heroesVivos shouldBe grupoCon(List(mago, bigote)).heroesVivos
         }
 
         "cuando no se agradan pelean " - {
             "si el heroe encontrado es mas fuerte el grupo sufre daño" in {
-                val grupo = grupoCon(mago)
-                val guerrero = Heroe(statsBuff,Guerrero(),Heroico,Loquito)
+              val guerrero = unGuerrero(fuerza = 2)
+              val grupo = grupoCon(mago)
 
-                Encuentro(guerrero)(grupo).heroesVivos shouldBe List()
+              Encuentro(guerrero)(grupo).heroesVivos shouldBe List()
             }
 
             "si el heroe encontrado es menos fuerte este escapa y el grupo sube un nivel " in {
-                val guerrero = Heroe(statsBuff,Guerrero(),Heroico,Loquito)
-                val grupo = grupoCon(guerrero)
-                Encuentro(mago)(grupo) shouldBe grupo.afectarHeroes(_.subirNivel)
+              val guerrero = unGuerrero(fuerza = 2)
+              val grupo = grupoCon(guerrero)
+
+              Encuentro(mago)(grupo) shouldBe grupo.afectarHeroes(_.subirNivel())
             }
         }
     }
