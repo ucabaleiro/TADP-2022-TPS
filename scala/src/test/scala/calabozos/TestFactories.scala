@@ -1,7 +1,7 @@
 package calabozos
 
 object TestFactories {
-  def grupoCon(heroe: Heroe, cofre: Cofre = List()): Grupo = Grupo(List(heroe), cofre)
+  def grupoCon(heroe: Heroe, cofre: Cofre = List(), habitacionesVisitadas: List[Habitacion] = List()): Grupo = Grupo(heroes = List(heroe), cofre = cofre, habitacionesVisitadas = habitacionesVisitadas)
 
   def grupoCon(heroes: List[Heroe]): Grupo = Grupo(heroes, List())
 
@@ -33,7 +33,7 @@ object TestFactories {
                  personalidad: Personalidad = Loquito): Guerrero =
     Guerrero(salud, nivel, fuerzaBase, velocidadBase, criterio, personalidad)
 
-  def unCofreCon(item: Item): Cofre = List(item)
+  def unCofreCon(items: Item*): Cofre = items.toList
 
   def unaHabitacion(puertas: List[Puerta] = List(), situacion: Situacion = NoPasaNada): Habitacion =
     Habitacion(puertas, situacion)

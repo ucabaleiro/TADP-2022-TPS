@@ -1,6 +1,6 @@
 package calabozos
 
-case class Puerta (obstaculos: List[Obstaculo], ubicacion: Ubicacion)
+class Puerta(val obstaculos: List[Obstaculo], val ubicacion: Ubicacion)
   extends (Grupo => Boolean) {
   def apply(grupo: Grupo): Boolean = obstaculos.forall(_(grupo))
 }

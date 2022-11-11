@@ -29,6 +29,10 @@ class ObstaculoTest extends AnyFreeSpec {
         Cerrada(grupoCon(unGuerrero())) shouldBe false
       }
 
+      "puede ser superado por un ladrón con habilidad de 20 o más" in {
+        Cerrada(grupoCon(unLadron(habilidadBase = 20))) shouldBe true
+      }
+
     }
 
     "cuando esta escondido" - {
@@ -60,6 +64,10 @@ class ObstaculoTest extends AnyFreeSpec {
       "no puede ser superado por otro heroe" in {
         Escondida(grupoCon(unGuerrero())) shouldBe false
       }
+
+      "puede ser superado por un ladrón con habilidad de 20 o más" in {
+        Escondida(grupoCon(unLadron(habilidadBase = 20))) shouldBe true
+      }
     }
 
   }
@@ -79,6 +87,10 @@ class ObstaculoTest extends AnyFreeSpec {
 
       "no lo puede superar un no mago" in {
         Encantada(Ibracadabra)(grupoCon(unGuerrero())) shouldBe false
+      }
+
+      "puede ser superado por un ladrón con habilidad de 20 o más" in {
+        Encantada(Ibracadabra)(grupoCon(unLadron(habilidadBase = 20))) shouldBe true
       }
     }
 }

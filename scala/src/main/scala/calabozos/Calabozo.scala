@@ -2,7 +2,7 @@ package calabozos
 
 import scala.annotation.tailrec
 
-case class Calabozo(entrada: Puerta) {
+class Calabozo(entrada: Puerta) {
 
   def hacerEntrar(grupo: Grupo): Option[Grupo] = grupo
     .agregarPuerta(entrada)

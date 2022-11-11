@@ -4,7 +4,7 @@ import calabozos.TestFactories.*
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers.*
 
-class TrabajoTest extends AnyFreeSpec {
+class HeroeTest extends AnyFreeSpec {
 
   "Un heroe " - {
 

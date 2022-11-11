@@ -1,6 +1,6 @@
 package calabozos
 
-case class Grupo(heroes: List[Heroe], cofre: Cofre, puertasConocidas: List[Puerta] = List()) {
+case class Grupo(heroes: List[Heroe], cofre: Cofre, puertasConocidas: List[Puerta] = List(), habitacionesVisitadas: List[Habitacion] = List()) {
   def hayVivos: Boolean = heroes.exists(_.estaVivo)
   def heroesVivos: List[Heroe] = heroes.filter(_.estaVivo)
   def fuerza: Double = heroesVivos.map(_.fuerza).sum
@@ -13,7 +13,9 @@ case class Grupo(heroes: List[Heroe], cofre: Cofre, puertasConocidas: List[Puert
 
   def agregarHeroe(heroe: Heroe): Grupo = copy(heroes = heroes ++ List(heroe))
   def agregarItem(item: Item): Grupo = copy(cofre = cofre ++ List(item))
-  def agregarPuerta(puerta: Puerta): Grupo = copy(puertasConocidas = puertasConocidas ++ List(puerta))
+  def agregarUbicacion(habitacion: Habitacion): Grupo = agregarUbicaciones(List(habitacion))
+  def agregarUbicaciones(habitaciones: List[Habitacion]): Grupo = copy(habitacionesVisitadas = habitacionesVisitadas ++ habitaciones)
+  def agregarPuerta(puerta: Puerta): Grupo = agregarPuertas(List(puerta))
   def agregarPuertas(puertasNuevas: List[Puerta]): Grupo = copy(puertasConocidas = puertasConocidas ++ puertasNuevas)
   private def quitarPuerta(puerta: Puerta): Grupo = copy(puertasConocidas = puertasConocidas.filterNot(_ == puerta))
 

@@ -11,14 +11,7 @@ class CalabozoTest extends AnyFreeSpec {
         val calabozo = Calabozo(unaPuertaDeSalida())
         val grupo = grupoCon(unGuerrero(fuerzaBase = 20, salud = 100))
 
-        calabozo.hacerEntrar(grupo).get shouldBe grupo
-      }
-
-      "cuando el grupo recorre las puertas hasta encontrar una salida la aventura termina" in {
-        val calabozo = Calabozo(unaPuerta(ubicacion = unaHabitacionConSalida()))
-        val grupo = grupoCon(unGuerrero(fuerzaBase = 20, salud = 100))
-
-        calabozo.hacerEntrar(grupo).get shouldBe grupo
+        calabozo.hacerEntrar(grupo) shouldBe Some(grupo)
       }
 
       "cuando no pueden abrir la puerta de entrada la aventura falla" in {
@@ -48,7 +41,8 @@ class CalabozoTest extends AnyFreeSpec {
 
     "al consultar el mejor grupo" - {
       val mago = unMago(aprendizaje = Aprendizaje(Vislumbrar, 0))
-      val calabozo = Calabozo(unaPuertaDeSalida(obstaculo = Encantada(Vislumbrar)))
+      val puerta = unaPuertaDeSalida(obstaculo = Encantada(Vislumbrar))
+      val calabozo = Calabozo(puerta)
 
       "Si el grupo tiene mas heroes vivos gana" in {
         val grupo1 = grupoCon(mago)
@@ -67,7 +61,7 @@ class CalabozoTest extends AnyFreeSpec {
       }
 
       "Si tiene mas items gana" in {
-        val grupo1 = grupoCon(mago, List(Llave, Ganzua))
+        val grupo1 = grupoCon(mago, unCofreCon(Llave, Ganzua))
         val grupo2 = grupoCon(mago)
 
         calabozo.mejorGrupo(List(grupo1, grupo2)) shouldBe Some(grupo1)

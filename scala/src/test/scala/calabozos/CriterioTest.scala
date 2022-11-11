@@ -8,7 +8,7 @@ class CriterioTest extends AnyFreeSpec {
   val grupo = grupoCon(List(unGuerrero(criterio = Heroico), unGuerrero(criterio = Heroico)))
   val puertas = List(unaPuerta(), unaPuerta())
   val puerta = unaPuerta()
-  val unaPuertaConTesoro: Puerta = Puerta(List(), Habitacion(List.empty, TesoroPerdido(Ganzua)))
+  val unaPuertaConTesoro: Puerta = unaPuerta(ubicacion = unaHabitacion(situacion = TesoroPerdido(Ganzua)))
   
   "Un heroe" - {
 
