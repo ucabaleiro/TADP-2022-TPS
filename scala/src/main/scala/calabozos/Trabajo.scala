@@ -1,37 +1,35 @@
 package calabozos
 
-sealed trait Trabajo(fuerzaBase: Double, velocidadBase: Double) {
-  def fuerza(nivel: Int): Double = fuerzaBase
-  def velocidad(nivel: Int): Double = velocidadBase
-}
+sealed trait Trabajo
 
-case class Guerrero(fuerzaBase: Double, velocidadBase: Double) extends Trabajo(fuerzaBase, velocidadBase) {
-  override def fuerza(nivel: Int): Double = fuerzaBase + fuerzaBase * nivel * 0.2
-}
+case class Guerrero() extends Trabajo
 
 object Guerrero {
+  def unapply(trabajo: Trabajo): Boolean = trabajo.isInstanceOf[Guerrero]
   def unapply(heroe: Heroe): Option[Guerrero] = heroe.trabajo match {
     case guerrero: Guerrero => Some(guerrero)
     case _ => None
   }
 }
 
-case class Ladron(fuerzaBase: Double, velocidadBase: Double, habilidad: Int) extends Trabajo(fuerzaBase, velocidadBase) {
+case class Ladron(habilidad: Int) extends Trabajo {
   def tieneHabilidad(nivel: Int, unaHabilidad: Int): Boolean = (habilidad + nivel * 3) >= unaHabilidad
 }
 
 object Ladron {
+  def unapply(trabajo: Trabajo): Boolean = trabajo.isInstanceOf[Ladron]
   def unapply(heroe: Heroe): Option[Ladron] = heroe.trabajo match {
     case ladron: Ladron => Some(ladron)
     case _ => None
   }
 }
 
-case class Mago(fuerzaBase: Double, velocidadBase: Double, aprendizajes: List[Aprendizaje]) extends Trabajo(fuerzaBase, velocidadBase) {
+case class Mago(aprendizajes: List[Aprendizaje]) extends Trabajo {
   def sabeHechizo(nivel: Int, hechizo: Hechizo): Boolean = aprendizajes.exists(_(nivel, hechizo))
 }
 
 object Mago {
+  def unapply(trabajo: Trabajo): Boolean = trabajo.isInstanceOf[Mago]
   def unapply(heroe: Heroe): Option[Mago] = heroe.trabajo match {
     case mago: Mago => Some(mago)
     case _ => None
