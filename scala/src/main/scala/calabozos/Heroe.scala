@@ -20,10 +20,6 @@ sealed trait Heroe(val salud: Double,
   protected def modificar(salud: Double = salud, nivel: Int = nivel): Heroe
 }
 
-object Guerrero {
-  def unapply(heroe: Heroe): Option[Guerrero] = Option.when(heroe.isInstanceOf[Guerrero])(heroe.asInstanceOf[Guerrero])
-}
-
 case class Guerrero(override val salud: Double,
                     override val nivel: Int,
                     fuerzaBase: Double,
@@ -33,10 +29,6 @@ case class Guerrero(override val salud: Double,
   override def fuerza: Double = fuerzaBase + fuerzaBase * nivel * 0.2
 
   override def modificar(salud: Double, nivel: Int): Heroe = this.copy(salud = salud, nivel = nivel)
-}
-
-object Ladron {
-  def unapply(heroe: Heroe): Option[Ladron] = Option.when(heroe.isInstanceOf[Ladron])(heroe.asInstanceOf[Ladron])
 }
 
 case class Ladron(override val salud: Double,
@@ -49,10 +41,6 @@ case class Ladron(override val salud: Double,
   def tieneHabilidad(habilidad: Int): Boolean = (habilidadBase + nivel * 3) >= habilidad
 
   override def modificar(salud: Double, nivel: Int): Heroe = this.copy(salud = salud, nivel = nivel)
-}
-
-object Mago {
-  def unapply(heroe: Heroe): Option[Mago] = Option.when(heroe.isInstanceOf[Mago])(heroe.asInstanceOf[Mago])
 }
 
 case class Mago(override val salud: Double,
