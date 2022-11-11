@@ -59,13 +59,12 @@ class Mago(override val salud: Double,
            override val nivel: Int,
            fuerzaBase: Double,
            velocidadBase: Double,
-           habilidadBase: Double,
            aprendizajes: List[Aprendizaje],
            override val criterio: Criterio,
            override val personalidad: Personalidad) extends Heroe(salud, nivel, fuerzaBase, velocidadBase, criterio, personalidad) {
   def sabeHechizo(hechizo: Hechizo): Boolean = aprendizajes.exists(_(nivel, hechizo))
 
-  override def copy(salud: Double = salud, nivel: Int = nivel): Heroe = Mago(salud, nivel, fuerzaBase, velocidadBase, habilidadBase, aprendizajes, criterio, personalidad)
+  override def copy(salud: Double = salud, nivel: Int = nivel): Heroe = Mago(salud, nivel, fuerzaBase, velocidadBase, aprendizajes, criterio, personalidad)
 }
 
 case class Aprendizaje(hechizo: Hechizo, nivel: Int) extends ((Int, Hechizo) => Boolean) {
