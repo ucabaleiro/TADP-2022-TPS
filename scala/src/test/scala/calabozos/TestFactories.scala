@@ -13,7 +13,7 @@ object TestFactories {
                velocidadBase: Double = 1,
                habilidadBase: Int = 1,
                criterio: Criterio = Heroico,
-               personalidad: Personalidad = Loquito): Heroe =
+               personalidad: Personalidad = Loquito): Ladron =
     Ladron(salud, nivel, fuerzaBase, velocidadBase, habilidadBase, criterio, personalidad)
 
   def unMago(salud: Double = 1,
@@ -22,7 +22,7 @@ object TestFactories {
              velocidadBase: Double = 1,
              aprendizaje: Aprendizaje = null,
              criterio: Criterio = Heroico,
-             personalidad: Personalidad = Loquito): Heroe =
+             personalidad: Personalidad = Loquito): Mago =
     Mago(salud, nivel, fuerzaBase, velocidadBase, aprendizajes = aprendizaje match { case null => List(); case _ => List(aprendizaje) }, criterio, personalidad)
 
   def unGuerrero(salud: Double = 1,
@@ -30,7 +30,7 @@ object TestFactories {
                  fuerzaBase: Double = 1,
                  velocidadBase: Double = 1,
                  criterio: Criterio = Heroico,
-                 personalidad: Personalidad = Loquito): Heroe =
+                 personalidad: Personalidad = Loquito): Guerrero =
     Guerrero(salud, nivel, fuerzaBase, velocidadBase, criterio, personalidad)
 
   def unCofreCon(item: Item): Cofre = List(item)
