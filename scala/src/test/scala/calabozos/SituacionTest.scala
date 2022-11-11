@@ -23,11 +23,11 @@ class SituacionTest extends AnyFreeSpec {
     }
 
     "encuentro " - {
-        val mago = Heroe(stats, Mago(List(Aprendizaje(Vislumbrar, 0))), Heroico, Bigote)
+        val mago = Heroe(stats(), Mago(List(Aprendizaje(Vislumbrar, 0))), Heroico, Bigote)
 
         "cuando se agradan el heroe encontrado se suma al grupo" in {
           val grupo = grupoCon(mago)
-          val guerrero = Heroe(stats, Guerrero(), Heroico, Bigote)
+          val guerrero = Heroe(stats(), Guerrero(), Heroico, Bigote)
 
           Encuentro(guerrero)(grupo).heroesVivos shouldBe grupoCon(List(mago,guerrero)).heroesVivos
         }

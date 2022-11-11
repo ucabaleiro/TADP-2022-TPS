@@ -7,13 +7,15 @@ object TestFactories {
 
   def unLadron(habilidad: Int): Heroe = heroe(Ladron(habilidad))
 
-  def unMago(aprendizaje: Aprendizaje): Heroe = heroe(Mago(List(aprendizaje)))
+  def unMago(aprendizaje: Aprendizaje, nivel: Int = 0): Heroe = heroe(Mago(List(aprendizaje)), nivel)
+
+  def unGuerrero(fuerza: Double, salud: Int): Heroe = Heroe(Stats(fuerza, 1, 0, salud), Guerrero(), Heroico, Loquito)
 
   def unCofreCon(item: Item): Cofre = List(item)
 
-  def heroe(trabajo: Trabajo): Heroe = Heroe(stats, trabajo, Heroico, Loquito)
+  def heroe(trabajo: Trabajo, nivel: Int = 0): Heroe = Heroe(stats(nivel), trabajo, Heroico, Loquito)
 
-  def stats: Stats = Stats(1, 1, 0, 1)
+  def stats(nivel: Int = 0): Stats = Stats(1, 1, nivel, 1)
 
   def heroeBuffeado(trabajo: Trabajo): Heroe = Heroe(statsBuff, trabajo, Heroico, Loquito)
 
@@ -21,5 +23,9 @@ object TestFactories {
 
   def puertaConObstaculos(obstaculos: List[Obstaculo] = List()): Puerta = Puerta(obstaculos, Habitacion(List(), NoPasaNada))
 
+  def puertaDeSalida(obstaculos: List[Obstaculo] = List()): Puerta = Puerta(obstaculos, Salida)
 
+  def puertaCon(habitacion: Habitacion): Puerta = Puerta(List(), habitacion)
+
+  def habitacionConSalida(): Habitacion = Habitacion(List(puertaDeSalida()), NoPasaNada)
 }
