@@ -47,8 +47,41 @@ class CalabozoTest extends AnyFreeSpec {
       }
     }
 
-    "al consultar el mejor grupo" in {
-      val 
+    "al consultar el mejor grupo" - {
+      val mago = unMago(Aprendizaje(Vislumbrar, 0))
+      val guerrero = unGuerrero(10,100)
+      val calabozo = Calabozo(Puerta(List(Encantada(Vislumbrar)), habitacionConSalida()))
+      "Si el grupo tiene mas heroes vivos gana" in {
+
+        val grupo1 = grupoCon(mago)
+        val grupo2 = grupoCon(List(guerrero))
+        val grupo3 = grupoCon(List(mago,mago,guerrero))
+
+        calabozo.mejorGrupo(List(grupo1,grupo2,grupo3)) shouldBe Some(grupo3)
+      }
+
+      "Si tiene mas items gana" in {
+
+        val grupo1 = grupoCon(mago,List(Llave,Ganzua))
+        val grupo2 = grupoCon(mago)
+
+        calabozo.mejorGrupo(List(grupo1,grupo2)) shouldBe Some(grupo1)
+      }
+
+      "Si es nivel mas alto gana" in {
+        val grupo1 = grupoCon(heroeBuffeado(Ladron(5)))
+        val grupo2 = grupoCon(mago)
+        calabozo.mejorGrupo(List(grupo1,grupo2)) shouldBe Some(grupo1)
+      }
+
+      "Si ninguno puede superar el calabozo no hay mejor" in {
+        val grupo1 = grupoCon(guerrero,List(Llave))
+        val grupo2 = grupoCon(List(guerrero,guerrero))
+
+        calabozo.mejorGrupo(List(grupo1,grupo2)) shouldBe None
+      }
+
+
     }
 
   }
