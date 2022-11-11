@@ -12,8 +12,8 @@ object Guerrero {
   }
 }
 
-case class Ladron(habilidad: Int) extends Trabajo {
-  def tieneHabilidad(nivel: Int, unaHabilidad: Int): Boolean = (habilidad + nivel * 3) >= unaHabilidad
+case class Ladron(habilidadBase: Int) extends Trabajo {
+  def tieneHabilidad(nivel: Int, habilidad: Int): Boolean = (habilidadBase + nivel * 3) >= habilidad
 }
 
 object Ladron {

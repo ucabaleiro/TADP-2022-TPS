@@ -75,7 +75,7 @@ class CalabozoTest extends AnyFreeSpec {
       }
 
       "Si es nivel mas alto gana" in {
-        val grupo1 = grupoCon(heroeBuffeado(Ladron(habilidad = 5)))
+        val grupo1 = grupoCon(heroeBuffeado(Ladron(habilidadBase = 5)))
         val grupo2 = grupoCon(mago)
         calabozo.mejorGrupo(List(grupo1, grupo2)) shouldBe Some(grupo1)
       }

@@ -15,14 +15,14 @@ class SituacionTest extends AnyFreeSpec {
     }
 
     "muchos dardos hace que todo el grupo pierda 10 de salud" in {
-      val ladron = heroeBuffeado(Ladron(habilidad = 5))
+      val ladron = heroeBuffeado(Ladron(habilidadBase = 5))
 
       MuchosDardos(grupoCon(ladron)).heroesVivos shouldBe List(ladron.perderSalud(10))
     }
 
     "trampa de leones mata al mas lento" in {
       val ladron = unLadron(5)
-      val ladronBuffeado = heroeBuffeado(Ladron(habilidad = 5))
+      val ladronBuffeado = heroeBuffeado(Ladron(habilidadBase = 5))
 
       TrampaDeLeones(grupoCon(List(ladron, ladronBuffeado))).heroesVivos shouldBe List(ladronBuffeado)
     }
