@@ -2,29 +2,29 @@ package calabozos
 
 class Puerta(val obstaculos: List[Obstaculo], val ubicacion: Ubicacion)
   extends (Grupo => Boolean) {
-  def apply(grupo: Grupo): Boolean = obstaculos.forall(_(grupo))
+  def apply(grupo: Grupo): Boolean = obstaculos.forall(_.puedeSerSuperadoPor(grupo))
 }
 
-trait Obstaculo extends (Grupo => Boolean) {
-  def apply(grupo: Grupo): Boolean = grupo.heroesVivos.exists(puedeSerSuperadoPorHeroe(_, grupo.cofre))
+trait Obstaculo {
+  def puedeSerSuperadoPor(grupo: Grupo): Boolean = grupo.heroesVivos.exists(puedeSerSuperadoPorHeroe(_, grupo))
 
-  def puedeSerSuperadoPorHeroe(heroe: Heroe, cofre: Cofre): Boolean = heroe match {
+  private def puedeSerSuperadoPorHeroe(heroe: Heroe, grupo: Grupo): Boolean = heroe match {
     case ladron: Ladron if ladron.tieneHabilidad(20) => true
-    case _ => puedeSerSuperadoPorHeroeSegunObstaculo(heroe, cofre)
+    case _ => puedeSerSuperadoPorHeroeSegunObstaculo(heroe, grupo)
   }
 
-  protected def puedeSerSuperadoPorHeroeSegunObstaculo(heroe: Heroe, cofre: Cofre): Boolean
+  protected def puedeSerSuperadoPorHeroeSegunObstaculo(heroe: Heroe, grupo: Grupo): Boolean
 }
 
 object Cerrada extends Obstaculo {
-  override def puedeSerSuperadoPorHeroeSegunObstaculo(heroe: Heroe, cofre: Cofre): Boolean = heroe match {
-    case ladron: Ladron if ladron.tieneHabilidad(10) || cofre.contains(Ganzua) => true
-    case _ => cofre.contains(Llave)
+  override def puedeSerSuperadoPorHeroeSegunObstaculo(heroe: Heroe, grupo: Grupo): Boolean = heroe match {
+    case ladron: Ladron if ladron.tieneHabilidad(10) || grupo.tieneItem(Ganzua) => true
+    case _ => grupo.tieneItem(Llave)
   }
 }
 
 object Escondida extends Obstaculo {
-  override def puedeSerSuperadoPorHeroeSegunObstaculo(heroe: Heroe, cofre: Cofre): Boolean = heroe match {
+  override def puedeSerSuperadoPorHeroeSegunObstaculo(heroe: Heroe, grupo: Grupo): Boolean = heroe match {
     case mago: Mago => mago.sabeHechizo(Vislumbrar)
     case ladron: Ladron => ladron.tieneHabilidad(6)
     case _ => false
@@ -32,7 +32,7 @@ object Escondida extends Obstaculo {
 }
 
 case class Encantada(hechizo: Hechizo) extends Obstaculo {
-  override def puedeSerSuperadoPorHeroeSegunObstaculo(heroe: Heroe, cofre: Cofre): Boolean = heroe match {
+  override def puedeSerSuperadoPorHeroeSegunObstaculo(heroe: Heroe, grupo: Grupo): Boolean = heroe match {
     case mago: Mago => mago.sabeHechizo(hechizo)
     case _ => false
   }

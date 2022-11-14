@@ -5,6 +5,7 @@ case class Grupo(heroes: List[Heroe], cofre: Cofre, puertasConocidas: List[Puert
   def heroesVivos: List[Heroe] = heroes.filter(_.estaVivo)
   def fuerza: Double = heroesVivos.map(_.fuerza).sum
   def lider: Option[Heroe] = Option.when(hayVivos)(heroesVivos.head)
+  def tieneItem(item: Item): Boolean = cofre.contains(item)
 
   private def puertasAbribles: List[Puerta] = puertasConocidas.filter(_(this))
   private def siguientePuerta: Option[Puerta] = lider.flatMap(_.elegirPuerta(puertasAbribles, this))
