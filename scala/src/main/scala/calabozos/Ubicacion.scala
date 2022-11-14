@@ -11,8 +11,8 @@ class Habitacion(var puertas: List[Puerta], private val situacion: Situacion) ex
     .abrirSiguientePuerta()
 
   override def hacerPasar(grupo: Grupo): Grupo =
-    if grupo.habitacionesVisitadas.contains(this) then grupo
-    else situacion(grupo.agregarUbicacion(this))
+    if grupo.visitoHabitacion(this) then grupo
+    else situacion(grupo.agregarHabitacion(this))
 }
 
 object Salida extends Ubicacion {
