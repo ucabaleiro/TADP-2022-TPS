@@ -1,8 +1,16 @@
 package calabozos
 
-class Puerta(val obstaculos: List[Obstaculo], val ubicacion: Ubicacion)
-  extends (Grupo => Boolean) {
-  def apply(grupo: Grupo): Boolean = obstaculos.forall(_.puedeSerSuperadoPor(grupo))
+class Puerta(obstaculos: List[Obstaculo], ubicacion: Ubicacion) {
+  def serRecorridaPor(grupo: Grupo): Option[Grupo] = Option(grupo)
+    .filter(puedeSerAbiertaPor)
+    .map(_.quitarPuerta(this))
+    .flatMap(ubicacion)
+
+  def hacerPasar(grupo: Grupo): Option[Grupo] = Option(grupo)
+    .filter(puedeSerAbiertaPor)
+    .map(ubicacion.pasar)
+
+  def puedeSerAbiertaPor(grupo: Grupo): Boolean = obstaculos.forall(_.puedeSerSuperadoPor(grupo))
 }
 
 trait Obstaculo {

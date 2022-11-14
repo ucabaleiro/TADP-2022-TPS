@@ -7,10 +7,10 @@ case class Grupo(heroes: List[Heroe], cofre: Cofre, puertasConocidas: List[Puert
   def lider: Option[Heroe] = Option.when(hayVivos)(heroesVivos.head)
   def tieneItem(item: Item): Boolean = cofre.contains(item)
 
-  private def puertasAbribles: List[Puerta] = puertasConocidas.filter(_(this))
+  private def puertasAbribles: List[Puerta] = puertasConocidas.filter(_.puedeSerAbiertaPor(this))
   private def siguientePuerta: Option[Puerta] = lider.flatMap(_.elegirPuerta(puertasAbribles, this))
 
-  def abrirSiguientePuerta(): Option[Grupo] = siguientePuerta.flatMap(puerta => puerta.ubicacion(quitarPuerta(puerta)))
+  def abrirSiguientePuerta(): Option[Grupo] = siguientePuerta.flatMap(_.serRecorridaPor(this))
 
   def agregarHeroe(heroe: Heroe): Grupo = copy(heroes = heroes ++ List(heroe))
   def agregarItem(item: Item): Grupo = copy(cofre = cofre ++ List(item))
@@ -18,7 +18,7 @@ case class Grupo(heroes: List[Heroe], cofre: Cofre, puertasConocidas: List[Puert
   def agregarUbicaciones(habitaciones: List[Habitacion]): Grupo = copy(habitacionesVisitadas = habitacionesVisitadas ++ habitaciones)
   def agregarPuerta(puerta: Puerta): Grupo = agregarPuertas(List(puerta))
   def agregarPuertas(puertasNuevas: List[Puerta]): Grupo = copy(puertasConocidas = puertasConocidas ++ puertasNuevas)
-  private def quitarPuerta(puerta: Puerta): Grupo = copy(puertasConocidas = puertasConocidas.filterNot(_ == puerta))
+  def quitarPuerta(puerta: Puerta): Grupo = copy(puertasConocidas = puertasConocidas.filterNot(_ == puerta))
 
   def afectarHeroe(criterio: List[Heroe] => Heroe, afectacion: Heroe => Heroe): Grupo = Option.when(hayVivos) {
     val heroe = criterio(heroesVivos)

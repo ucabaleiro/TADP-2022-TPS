@@ -13,7 +13,7 @@ class PuertaTest extends AnyFreeSpec {
       val mago = unMago(aprendizaje = Aprendizaje(Vislumbrar, 0))
       val ladron = unLadron(habilidadBase = 10)
 
-      puerta(grupoCon(List(mago, ladron))) shouldBe true
+      puerta.puedeSerAbiertaPor(grupoCon(List(mago, ladron))) shouldBe true
     }
 
     "puede ser abierta si un solo héroe puede atravesar todos los obstáculos, aunque haya otro que no" in {
@@ -22,7 +22,7 @@ class PuertaTest extends AnyFreeSpec {
       val ladron = unLadron(habilidadBase = 10)
       val guerrero = unGuerrero()
 
-      puerta(grupoCon(List(ladron, guerrero))) shouldBe true
+      puerta.puedeSerAbiertaPor(grupoCon(List(ladron, guerrero))) shouldBe true
     }
 
     "no puede ser abierta si ninguno de los héroes puede atravesar todos sus obstáculos" in {
@@ -31,7 +31,7 @@ class PuertaTest extends AnyFreeSpec {
       val mago = unMago(aprendizaje = Aprendizaje(Vislumbrar, 0))
       val guerrero = unGuerrero()
 
-      puerta(grupoCon(List(mago, guerrero))) shouldBe false
+      puerta.puedeSerAbiertaPor(grupoCon(List(mago, guerrero))) shouldBe false
     }
   }
 
