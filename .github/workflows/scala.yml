@@ -12,18 +12,18 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        scala: [2.13.0]
-        java: [adopt@1.8]
-    
+        scala: [3.2.0]
+        java: [adopt@1.11]
+
     defaults:
       run:
         working-directory: scala
-    
+
     runs-on: ${{ matrix.os }}
-    
+
     steps:
       - name: Checkout current branch (full)
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
