@@ -11,28 +11,28 @@ class UbicacionTest extends AnyFreeSpec {
         val grupo = grupoCon(unGuerrero(salud = 100))
         val habitacion = unaHabitacion(situacion = MuchosDardos)
 
-        habitacion.pasar(grupo) shouldBe grupoCon(unGuerrero(salud = 90), habitacionesVisitadas = List(habitacion))
+        habitacion.hacerPasar(grupo) shouldBe grupoCon(unGuerrero(salud = 90), habitacionesVisitadas = List(habitacion))
       }
 
       "puede ser recorrida exitosamente" in {
         val grupo = grupoCon(unGuerrero(salud = 100))
         val habitacion = unaHabitacionConSalida(situacion = MuchosDardos)
 
-        habitacion(grupo) shouldBe Some(grupoCon(unGuerrero(salud = 90), habitacionesVisitadas = List(habitacion)))
+        habitacion.serRecorridaPor(grupo) shouldBe Some(grupoCon(unGuerrero(salud = 90), habitacionesVisitadas = List(habitacion)))
       }
 
       "puede fallar porque el grupo se queda sin puertas atravesables" in {
         val grupo = grupoCon(unGuerrero())
         val habitacion = unaHabitacionConSalida(obstaculo = Cerrada)
 
-        habitacion(grupo) shouldBe None
+        habitacion.serRecorridaPor(grupo) shouldBe None
       }
 
       "puede fallar porque el grupo se queda sin héroes vivos" in {
         val grupo = grupoCon(unGuerrero(salud = 10))
         val habitacion = unaHabitacionConSalida(situacion = MuchosDardos)
 
-        habitacion(grupo) shouldBe None
+        habitacion.serRecorridaPor(grupo) shouldBe None
       }
 
       "un grupo no atraviesa la misma situación dos veces" in {
@@ -40,19 +40,19 @@ class UbicacionTest extends AnyFreeSpec {
 
         val habitacion = unaHabitacionConSalida(situacion = MuchosDardos)
 
-        habitacion.pasar( habitacion.pasar(grupo) ) shouldBe grupoCon(unGuerrero(salud = 10), habitacionesVisitadas = List(habitacion))
+        habitacion.hacerPasar( habitacion.hacerPasar(grupo) ) shouldBe grupoCon(unGuerrero(salud = 10), habitacionesVisitadas = List(habitacion))
       }
     }
 
     "cuando es salida" - {
       "no modifica al grupo que pasa por ella" in {
         val grupo = grupoCon(unGuerrero())
-        Salida.pasar(grupo) shouldBe grupoCon(unGuerrero())
+        Salida.hacerPasar(grupo) shouldBe grupoCon(unGuerrero())
       }
 
       "retorna un grupo exitoso al recorrerla" in {
         val grupo = grupoCon(unGuerrero())
-        Salida(grupo) shouldBe Some(grupoCon(unGuerrero()))
+        Salida.serRecorridaPor(grupo) shouldBe Some(grupoCon(unGuerrero()))
       }
     }
   }

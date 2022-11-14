@@ -1,5 +1,6 @@
 package calabozos
 
+// TODO: Ver si debería devolver Try[Grupo]
 sealed trait Situacion extends (Grupo => Grupo)
 
 case object NoPasaNada extends Situacion {

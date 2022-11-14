@@ -4,11 +4,11 @@ class Puerta(obstaculos: List[Obstaculo], ubicacion: Ubicacion) {
   def serRecorridaPor(grupo: Grupo): Option[Grupo] = Option(grupo)
     .filter(puedeSerAbiertaPor)
     .map(_.quitarPuerta(this))
-    .flatMap(ubicacion)
+    .flatMap(ubicacion.serRecorridaPor)
 
   def hacerPasar(grupo: Grupo): Option[Grupo] = Option(grupo)
     .filter(puedeSerAbiertaPor)
-    .map(ubicacion.pasar)
+    .map(ubicacion.hacerPasar)
 
   def puedeSerAbiertaPor(grupo: Grupo): Boolean = obstaculos.forall(_.puedeSerSuperadoPor(grupo))
 }

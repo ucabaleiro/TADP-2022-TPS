@@ -1,20 +1,22 @@
 package calabozos
 
-sealed trait Ubicacion extends (Grupo => Option[Grupo]) {
-  def pasar(grupo: Grupo): Grupo
+sealed trait Ubicacion {
+  def serRecorridaPor(grupo: Grupo): Option[Grupo]
+  def hacerPasar(grupo: Grupo): Grupo
 }
 
 class Habitacion(var puertas: List[Puerta], private val situacion: Situacion) extends Ubicacion {
-  def apply(grupo: Grupo): Option[Grupo] = pasar(grupo)
+  override def serRecorridaPor(grupo: Grupo): Option[Grupo] = hacerPasar(grupo)
     .agregarPuertas(puertas)
     .abrirSiguientePuerta()
 
-  override def pasar(grupo: Grupo): Grupo =
-    if grupo.habitacionesVisitadas.contains(this) then grupo else situacion(grupo.agregarUbicacion(this))
+  override def hacerPasar(grupo: Grupo): Grupo =
+    if grupo.habitacionesVisitadas.contains(this) then grupo
+    else situacion(grupo.agregarUbicacion(this))
 }
 
 object Salida extends Ubicacion {
-  def apply(grupo: Grupo): Option[Grupo] = Some(pasar(grupo))
+  def serRecorridaPor(grupo: Grupo): Option[Grupo] = Some(hacerPasar(grupo))
 
-  override def pasar(grupo: Grupo): Grupo = grupo
+  override def hacerPasar(grupo: Grupo): Grupo = grupo
 }
