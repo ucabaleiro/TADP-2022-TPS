@@ -11,5 +11,5 @@ case object Ordenado extends Criterio {
 }
 
 case object Vidente extends Criterio {
-  def apply(puertas: List[Puerta], grupo: Grupo): Option[Puerta] = puertas.maxByOption(_.hacerPasar(grupo).map(_.puntaje))
+  def apply(puertas: List[Puerta], grupo: Grupo): Option[Puerta] = puertas.maxByOption(_.hacerPasar(grupo).map(_.puntaje).toOption)
 }

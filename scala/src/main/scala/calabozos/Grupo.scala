@@ -1,20 +1,27 @@
 package calabozos
 
+import scala.util.{Failure, Success, Try}
+
 // TODO: Ver si se podría validar que haya héroes vivos acá
 case class Grupo(private val heroes: List[Heroe],
                  private val cofre: Cofre,
                  private val puertasConocidas: List[Puerta] = List(),
                  private val habitacionesVisitadas: List[Habitacion] = List()) {
+  if (heroesVivos.isEmpty) throw GrupoMuertoException()
+
   def heroesVivos: List[Heroe] = heroes.filter(_.estaVivo)
   def fuerza: Double = heroesVivos.map(_.fuerza).sum
-  def lider: Option[Heroe] = heroesVivos.headOption
+  def lider: Heroe = heroesVivos.head
   def tieneItem(item: Item): Boolean = cofre.contains(item)
   def visitoHabitacion(habitacion: Habitacion): Boolean = habitacionesVisitadas.contains(habitacion)
 
   private def puertasAbribles: List[Puerta] = puertasConocidas.filter(_.puedeSerAbiertaPor(this))
-  private def siguientePuerta: Option[Puerta] = lider.flatMap(_.elegirPuerta(puertasAbribles, this))
+  private def siguientePuerta: Try[Puerta] = lider.elegirPuerta(puertasAbribles, this) match {
+    case Some(puerta) => Success(puerta)
+    case None => Failure(GrupoEncerradoException())
+  }
 
-  def abrirSiguientePuerta(): Option[Grupo] = siguientePuerta.flatMap(_.serRecorridaPor(this))
+  def abrirSiguientePuerta(): Try[Grupo] = siguientePuerta.flatMap(_.serRecorridaPor(this))
 
   def agregarHeroe(heroe: Heroe): Grupo = copy(heroes = heroes ++ List(heroe))
   def agregarItem(item: Item): Grupo = copy(cofre = cofre ++ List(item))

@@ -3,6 +3,7 @@ package calabozos
 import calabozos.TestFactories.*
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers.*
+import scala.util.{Failure, Success}
 
 class CalabozoTest extends AnyFreeSpec {
   "Un calabozo" - {
@@ -11,7 +12,7 @@ class CalabozoTest extends AnyFreeSpec {
         val calabozo = Calabozo(unaPuertaDeSalida())
         val grupo = grupoCon(unGuerrero(fuerzaBase = 20, salud = 100))
 
-        calabozo.hacerEntrar(grupo) shouldBe Some(grupo)
+        calabozo.hacerEntrar(grupo) shouldBe Success(grupo)
       }
 
       "cuando no pueden abrir la puerta de entrada la aventura falla" in {
@@ -19,7 +20,7 @@ class CalabozoTest extends AnyFreeSpec {
         val calabozo = Calabozo(unaPuerta(obstaculos = List(Cerrada), ubicacion = habitacion))
         val grupo = grupoCon(unGuerrero(fuerzaBase = 20, salud = 100))
 
-        calabozo.hacerEntrar(grupo) shouldBe None
+        calabozo.hacerEntrar(grupo) shouldBe Failure(GrupoEncerradoException())
       }
     }
 
@@ -28,14 +29,14 @@ class CalabozoTest extends AnyFreeSpec {
         val mago = unMago(aprendizaje = Aprendizaje(Vislumbrar, 10))
         val calabozo = Calabozo(unaPuertaDeSalida(obstaculo = Encantada(Vislumbrar)))
 
-        calabozo.nivelesParaGrupo(grupoCon(mago)) shouldBe Some(10)
+        calabozo.nivelesParaGrupo(grupoCon(mago)) shouldBe Success(10)
       }
 
       "devuelve None si el grupo no puede salir dándole 20 niveles" in {
         val mago = unMago(aprendizaje = Aprendizaje(Vislumbrar, 21))
         val calabozo = Calabozo(unaPuertaDeSalida(obstaculo = Encantada(Vislumbrar)))
 
-        calabozo.nivelesParaGrupo(grupoCon(mago)) shouldBe None
+        calabozo.nivelesParaGrupo(grupoCon(mago)) shouldBe Failure(GrupoEncerradoException())
       }
     }
 

@@ -28,7 +28,7 @@ class SituacionTest extends AnyFreeSpec {
     }
 
     "encuentro " - {
-        val mago = unMago(aprendizaje = Aprendizaje(Vislumbrar, 0), criterio = Heroico, personalidad = Bigote)
+        val mago = unMago(salud = 20, aprendizaje = Aprendizaje(Vislumbrar, 0), criterio = Heroico, personalidad = Bigote)
 
         "cuando se agradan el heroe encontrado se suma al grupo" in {
           val bigote = unGuerrero(personalidad = Bigote)
@@ -42,7 +42,7 @@ class SituacionTest extends AnyFreeSpec {
               val guerrero = unGuerrero(fuerzaBase = 2, personalidad = Loquito)
               val grupo = grupoCon(mago)
 
-              Encuentro(guerrero)(grupo).heroesVivos shouldBe List()
+              Encuentro(guerrero)(grupo).lider shouldBe mago.perderSalud(2)
             }
 
             "si el heroe encontrado es menos fuerte este escapa y el grupo sube un nivel " in {

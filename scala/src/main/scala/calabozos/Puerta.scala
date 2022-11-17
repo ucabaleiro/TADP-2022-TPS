@@ -1,14 +1,16 @@
 package calabozos
 
+import scala.util.Try
+
 class Puerta(obstaculos: List[Obstaculo], ubicacion: Ubicacion) {
-  def serRecorridaPor(grupo: Grupo): Option[Grupo] = Option(grupo)
+  def serRecorridaPor(grupo: Grupo): Try[Grupo] = Try(grupo)
     .filter(puedeSerAbiertaPor)
     .map(_.quitarPuerta(this))
     .flatMap(ubicacion.serRecorridaPor)
 
-  def hacerPasar(grupo: Grupo): Option[Grupo] = Option(grupo)
+  def hacerPasar(grupo: Grupo): Try[Grupo] = Try(grupo)
     .filter(puedeSerAbiertaPor)
-    .map(ubicacion.hacerPasar)
+    .flatMap(ubicacion.hacerPasar)
 
   def puedeSerAbiertaPor(grupo: Grupo): Boolean = obstaculos.forall(_.puedeSerSuperadoPor(grupo))
 }
