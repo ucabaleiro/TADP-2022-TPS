@@ -2,7 +2,6 @@ package calabozos
 
 import scala.util.{Failure, Success, Try}
 
-// TODO: Ver si se podría validar que haya héroes vivos acá
 case class Grupo(private val heroes: List[Heroe],
                  private val cofre: Cofre,
                  private val puertasConocidas: List[Puerta] = List(),
