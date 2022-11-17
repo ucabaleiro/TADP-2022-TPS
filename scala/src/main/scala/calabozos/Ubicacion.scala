@@ -1,20 +1,25 @@
 package calabozos
 
-sealed trait Ubicacion extends (Grupo => Option[Grupo]) {
-  def pasar(grupo: Grupo): Grupo
+import scala.util.Try
+import scala.util.{Success, Failure}
+
+sealed trait Ubicacion {
+  def serRecorridaPor(grupo: Grupo): Try[Grupo]
+  def hacerPasar(grupo: Grupo): Try[Grupo]
 }
 
 class Habitacion(var puertas: List[Puerta], private val situacion: Situacion) extends Ubicacion {
-  def apply(grupo: Grupo): Option[Grupo] = pasar(grupo)
-    .agregarPuertas(puertas)
-    .abrirSiguientePuerta()
+  override def serRecorridaPor(grupo: Grupo): Try[Grupo] = hacerPasar(grupo)
+    .map(_.agregarPuertas(puertas))
+    .flatMap(_.abrirSiguientePuerta())
 
-  override def pasar(grupo: Grupo): Grupo =
-    if grupo.habitacionesVisitadas.contains(this) then grupo else situacion(grupo.agregarUbicacion(this))
+  override def hacerPasar(grupo: Grupo): Try[Grupo] =
+    if grupo.visitoHabitacion(this) then Success(grupo)
+    else Try(situacion(grupo.agregarHabitacion(this)))
 }
 
 object Salida extends Ubicacion {
-  def apply(grupo: Grupo): Option[Grupo] = Some(pasar(grupo))
+  def serRecorridaPor(grupo: Grupo): Try[Grupo] = hacerPasar(grupo)
 
-  override def pasar(grupo: Grupo): Grupo = grupo
+  override def hacerPasar(grupo: Grupo): Try[Grupo] = Success(grupo)
 }
